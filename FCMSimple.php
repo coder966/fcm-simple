@@ -10,7 +10,7 @@ class FCMSimple {
 
 	private $serverKey = "";
 	private $devices = array();
-	private $result;
+	private $response;
 
 
 	/**
