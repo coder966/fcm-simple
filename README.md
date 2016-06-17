@@ -5,8 +5,10 @@ A PHP class to send messages to devices registered through Firebase Cloud Messag
 - Adapted from the code available at https://github.com/mattg888/GCM-PHP-Server-Push-Message/blob/master/GCMPushMessage.php with some modifications to work with FCM instead of GCM.
 - Add new feature `fixDevices`.
 
+
 Usage
 ---
+##### PHP-server:
 ```
 require_once("FCMSimple.php");
 
@@ -22,6 +24,13 @@ $newDevices = $fcm->fixDevices();
 
 // You should then assign $newDevices to $devices
 ```
+
+##### Android-Client:
+In the service that extends `FirebaseMessagingService`, in method `onMessageReceived` use:
+```
+remoteMessage.getData().get("message");
+```
+
 
 License
 ---
