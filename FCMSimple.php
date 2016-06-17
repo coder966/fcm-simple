@@ -1,6 +1,6 @@
 <?php
 /**
- * Class to send simple messages using Firebase Cloud Messaging
+ * PHP class to send simple messages using Firebase Cloud Messaging (FCM)
  * 
  * @license GNU GPL version 3.0
  * @author Khalid H. Alharisi <coder966@gmail.com>
@@ -10,6 +10,7 @@ class FCMSimple {
 
 	private $serverKey = "";
 	private $devices = array();
+	private $result;
 
 
 	/**
@@ -67,12 +68,12 @@ class FCMSimple {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 		// Execute post
-		$result = curl_exec($ch);
+		$this->response = curl_exec($ch);
 
 		// Close connection
 		curl_close($ch);
 
-		return $result;
+		return $this->response;
 	}
 
 	/**
@@ -82,5 +83,38 @@ class FCMSimple {
 	private function error($message){
 		echo "Android send notification failed with error:\t$message";
 		exit(1);
+	}
+
+	/**
+	 * To return a "NEW" array of registered device tokens that has no bad tokens
+	 * This method can fix these errors:
+	 * 		1- MissingRegistration : Empty registration id
+	 * 		2- InvalidRegistration : Not even a a registration id, random string
+	 * 		3- NotRegistered       : The device has uninstalled the app
+	 * 		4- Update canonical IDs
+	 *
+	 * @return [array] New array of fixed ids
+	 */
+	public function fixDevices(){
+		$response = json_decode($this->response, true)["results"];
+		$devices = $this->devices;
+
+		for($i=0; $i<count($devices); $i++){
+			if(isset($response[$i]["error"]) and (
+					($response[$i]["error"] == "MissingRegistration") or
+					($response[$i]["error"] == "InvalidRegistration") or
+					($response[$i]["error"] == "NotRegistered"))){
+				unset($devices[$i]);
+			}
+
+			if(isset($response[$i]["registration_id"])){
+				$devices[$i] = $response[$i]["registration_id"];
+			}
+		}
+
+		// re-index the array and remove duplicated IDs
+		$devices = array_unique(array_values($devices));
+
+		return $devices;
 	}
 }

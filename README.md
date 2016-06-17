@@ -2,8 +2,8 @@ FCMSimple
 ===
 A PHP class to send messages to devices registered through Firebase Cloud Messaging (FCM).
 
-Adapted from the code available at `https://github.com/mattg888/GCM-PHP-Server-Push-Message/blob/master/GCMPushMessage.php`
-And add some other features.
+- Adapted from the code available at https://github.com/mattg888/GCM-PHP-Server-Push-Message/blob/master/GCMPushMessage.php with some modifications to work with FCM instead of GCM.
+- Add new feature `fixDevices`.
 
 Usage
 ---
@@ -13,10 +13,14 @@ require_once("FCMSimple.php");
 $fcm = new FCMSimple($serverKey);
 $fcm->setDevices($devices);
 $response = $fcm->send($message);
+$newDevices = $fcm->fixDevices();
 
-// $serverKey Your FCM server key
-// $devices An array of registered device tokens
-// $message The mesasge you want to push out
+// $serverKey  Your FCM server key
+// $devices    An array of registered device tokens
+// $message    The mesasge you want to push out
+// $newDevices New array of fixed ids
+
+// You should then assign $newDevices to $devices
 ```
 
 License
