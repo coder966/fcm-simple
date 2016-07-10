@@ -29,7 +29,7 @@ $updatedTokens = $fcm->getUpdatedTokens();
 ##### Android-Client:
 In the service that extends `FirebaseMessagingService`, in method `onMessageReceived` use:
 ```
-remoteMessage.getData().get("key");
+Map<String, String> msg = remoteMessage.getData();
 ```
 
 
