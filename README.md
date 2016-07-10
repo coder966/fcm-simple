@@ -14,7 +14,8 @@ require_once("FCMSimple.php");
 
 $fcm = new FCMSimple($serverKey);
 $fcm->setDevices($tokens);
-$response = $fcm->send($message);
+$messageData = array("key1"=>"value1", "key2"=>"value2" ...);
+$response = $fcm->send($messageData);
 $updatedTokens = $fcm->getUpdatedTokens();
 
 // $serverKey      Your FCM server key
@@ -28,7 +29,7 @@ $updatedTokens = $fcm->getUpdatedTokens();
 ##### Android-Client:
 In the service that extends `FirebaseMessagingService`, in method `onMessageReceived` use:
 ```
-remoteMessage.getData().get("message");
+remoteMessage.getData().get("key");
 ```
 
 

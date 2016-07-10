@@ -31,10 +31,10 @@ class FCMSimple {
 
 	/**
 	 * Send message to the tokens
-	 * @param  [mixed]  $message The message to send
-	 * @return [json]      	     The response from server
+	 * @param  [array]  $messageData Array contains keys and values
+	 * @return [json]      	         The response from server
 	 */
-	public function send($message){
+	public function send(array $messageData){
 		// check required data
 		if(strlen($this->serverKey) < 20){
 			$this->error("Server Key not set");
@@ -46,7 +46,7 @@ class FCMSimple {
 		// prepare message
 		$fields = array(
 			"registration_ids"  => $this->tokens,
-			"data"              => array("message" => $message),
+			"data"              => $messageData,
 		);
 		$headers = array(
 			"Authorization: key=".$this->serverKey,
