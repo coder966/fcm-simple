@@ -13,16 +13,16 @@ Usage
 require_once("FCMSimple.php");
 
 $fcm = new FCMSimple($serverKey);
-$fcm->setDevices($devices);
+$fcm->setDevices($tokens);
 $response = $fcm->send($message);
-$updatedDevices = $fcm->getUpdatedTokens();
+$updatedTokens = $fcm->getUpdatedTokens();
 
 // $serverKey      Your FCM server key
-// $devices        An array of registered device tokens
+// $tokens         An array of registered device tokens
 // $message        The mesasge you want to push out
-// $updatedDevices Updated registered device tokens
+// $updatedTokens Updated registered device tokens
 
-// You should then assign $updatedDevices to $devices
+// You should then assign $updatedTokens to $tokens
 ```
 
 ##### Android-Client:

@@ -9,7 +9,7 @@
 class FCMSimple {
 
 	private $serverKey = "";
-	private $devices = array();
+	private $tokens = array();
 	private $response;
 
 
@@ -22,15 +22,15 @@ class FCMSimple {
 	}
 
 	/**
-	 * Set the devices to send to
+	 * Set the tokens to send to
 	 * @param [array] $deviceTokens Array of device tokens to send to
 	 */
-	public function setDevices(array $deviceTokens){
-		$this->devices = $deviceTokens;
+	public function setTokens(array $deviceTokens){
+		$this->tokens = $deviceTokens;
 	}
 
 	/**
-	 * Send message to the devices
+	 * Send message to the tokens
 	 * @param  [mixed]  $message The message to send
 	 * @return [json]      	     The response from server
 	 */
@@ -39,13 +39,13 @@ class FCMSimple {
 		if(strlen($this->serverKey) < 20){
 			$this->error("Server Key not set");
 		}
-		if(!is_array($this->devices) || count($this->devices) == 0){
-			$this->error("No devices set");
+		if(!is_array($this->tokens) || count($this->tokens) == 0){
+			$this->error("No tokens set");
 		}
 
 		// prepare message
 		$fields = array(
-			"registration_ids"  => $this->devices,
+			"registration_ids"  => $this->tokens,
 			"data"              => array("message" => $message),
 		);
 		$headers = array(
@@ -97,24 +97,24 @@ class FCMSimple {
 	 */
 	public function getUpdatedTokens(){
 		$response = json_decode($this->response, true)["results"];
-		$devices = $this->devices;
+		$tokens = $this->tokens;
 
-		for($i=0; $i<count($devices); $i++){
+		for($i=0; $i<count($tokens); $i++){
 			if(isset($response[$i]["error"]) and (
 					($response[$i]["error"] == "MissingRegistration") or
 					($response[$i]["error"] == "InvalidRegistration") or
 					($response[$i]["error"] == "NotRegistered"))){
-				unset($devices[$i]);
+				unset($tokens[$i]);
 			}
 
 			if(isset($response[$i]["registration_id"])){
-				$devices[$i] = $response[$i]["registration_id"];
+				$tokens[$i] = $response[$i]["registration_id"];
 			}
 		}
 
 		// re-index the array and remove duplicated IDs
-		$devices = array_unique(array_values($devices));
+		$tokens = array_unique(array_values($tokens));
 
-		return $devices;
+		return $tokens;
 	}
 }
