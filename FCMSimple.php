@@ -86,7 +86,7 @@ class FCMSimple {
 	}
 
 	/**
-	 * To return a "NEW" array of registered device tokens that has no bad tokens
+	 * To return a new array of updated registered device tokens that has no bad tokens
 	 * This method can fix these errors:
 	 * 		1- MissingRegistration : Empty registration id
 	 * 		2- InvalidRegistration : Not even a a registration id, random string
@@ -95,7 +95,7 @@ class FCMSimple {
 	 *
 	 * @return [array] New array of fixed ids
 	 */
-	public function fixDevices(){
+	public function getUpdatedTokens(){
 		$response = json_decode($this->response, true)["results"];
 		$devices = $this->devices;
 
