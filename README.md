@@ -8,9 +8,15 @@ A PHP class to send messages to devices registered through Firebase Cloud Messag
 
 Usage
 ---
-##### PHP-server:
+##### Installation:
+Run the following command in your project-root directory
 ```
-require_once("FCMSimple.php");
+composer require coder966/FCMSimple
+```
+
+##### PHP-Server:
+```
+require 'vendor/autoload.php'; // Load composer dependencies
 
 $fcm = new FCMSimple($serverKey);
 $fcm->setTokens($tokens);
