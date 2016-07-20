@@ -1,6 +1,9 @@
 Changelog
 ===
 
+##### v1.2.1 (20-7-2016):
+* Fix in Composer support
+
 ##### v1.2 (20-7-2016):
 * Support Composer
 
