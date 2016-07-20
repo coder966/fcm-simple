@@ -11,7 +11,7 @@ Usage
 ##### Installation:
 Run the following command in your project-root directory
 ```
-composer require coder966/FCMSimple
+composer require coder966/fcm-simple
 ```
 
 ##### PHP-Server:
