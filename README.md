@@ -13,7 +13,7 @@ Usage
 require_once("FCMSimple.php");
 
 $fcm = new FCMSimple($serverKey);
-$fcm->setDevices($tokens);
+$fcm->setTokens($tokens);
 $messageData = array("key1"=>"value1", "key2"=>"value2" ...);
 $response = $fcm->send($messageData);
 $updatedTokens = $fcm->getUpdatedTokens();
@@ -21,7 +21,7 @@ $updatedTokens = $fcm->getUpdatedTokens();
 // $serverKey      Your FCM server key
 // $tokens         An array of registered device tokens
 // $message        The mesasge you want to push out
-// $updatedTokens Updated registered device tokens
+// $updatedTokens  An Array of updated registered device tokens
 
 // You should then assign $updatedTokens to $tokens
 ```
