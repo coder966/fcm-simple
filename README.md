@@ -11,11 +11,11 @@ Usage
 ##### Installation:
 Run the following command in your project-root directory
 ```
-composer require coder966/fcm-simple
+$ composer require coder966/fcm-simple
 ```
 
 ##### PHP-Server:
-```
+```php
 require 'vendor/autoload.php'; // Load composer dependencies
 
 $fcm = new FCMSimple($serverKey);
@@ -34,7 +34,7 @@ $updatedTokens = $fcm->getUpdatedTokens();
 
 ##### Android-Client:
 In the service that extends `FirebaseMessagingService`, in method `onMessageReceived` use:
-```
+```java
 Map<String, String> msg = remoteMessage.getData();
 ```
 
