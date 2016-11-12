@@ -5,7 +5,7 @@
     "description": "PHP simple application server implementation for Firebase Cloud Messaging",
     "keywords": ["Firebase", "Cloud", "Messaging", "FCM", "Android", "iOS"],
     "homepage": "https://github.com/coder966/FCMSimple",
-    "license": "GPL-3.0",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Khalid Alharisi",
