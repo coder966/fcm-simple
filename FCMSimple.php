@@ -86,35 +86,48 @@ class FCMSimple {
 	}
 
 	/**
-	 * To return a new array of updated registered device tokens that has no bad tokens
-	 * This method can fix these errors:
+	 * Returns an array of bad registration ids. You should delete these from your server.
+	 * This method can handle these errors:
 	 * 		1- MissingRegistration : Empty registration id
 	 * 		2- InvalidRegistration : Not even a a registration id, random string
 	 * 		3- NotRegistered       : The device has uninstalled the app
-	 * 		4- Update canonical IDs
 	 *
-	 * @return [array] New array of fixed ids
+	 * @return [array] Bad tokens to be removed
 	 */
-	public function getUpdatedTokens(){
+	public function getBadTokens(){
 		$response = json_decode($this->response, true)["results"];
-		$tokens = $this->tokens;
 
-		for($i=0; $i<count($tokens); $i++){
+		$badTokens = array();
+		for($i=0; $i<count($this->tokens); $i++){
 			if(isset($response[$i]["error"]) and (
 					($response[$i]["error"] == "MissingRegistration") or
 					($response[$i]["error"] == "InvalidRegistration") or
 					($response[$i]["error"] == "NotRegistered"))){
-				unset($tokens[$i]);
-			}
 
-			if(isset($response[$i]["registration_id"])){
-				$tokens[$i] = $response[$i]["registration_id"];
+				array_push($badTokens, $this->tokens[$i]);
 			}
 		}
 
-		// re-index the array and remove duplicated IDs
-		$tokens = array_unique(array_values($tokens));
-
-		return $tokens;
+		return $badTokens;
 	}
+
+	/**
+	 * Returns an array of the updated registration ids. You should update old tokens with the new ones
+	 *
+	 * @return [array] An array of format {'old'=>oldToken, 'new'=>newToken}
+	 */
+	public function getUpdatedTokens(){
+		$response = json_decode($this->response, true)["results"];
+
+		$updatedTokens = array();
+		for($i=0; $i<count($this->tokens); $i++){
+			if(isset($response[$i]["registration_id"])){
+				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $response[$i]["registration_id"]));
+			}
+		}
+
+		return $updatedTokens;
+	}
+
+
 }
