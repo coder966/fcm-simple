@@ -3,7 +3,7 @@ FCMSimple
 A PHP class to send messages to devices registered through Firebase Cloud Messaging (FCM).
 
 - Adapted from the code available at [GCM-PHP-Server-Push-Message](https://github.com/mattg888/GCM-PHP-Server-Push-Message) with some modifications to work with FCM instead of GCM.
-- Add new feature `getUpdatedTokens`.
+- Add new features `getBadTokens` and `getUpdatedTokens`.
 
 
 Usage
@@ -22,14 +22,14 @@ $fcm = new FCMSimple($serverKey);
 $fcm->setTokens($tokens);
 $messageData = array("key1"=>"value1", "key2"=>"value2" ...);
 $response = $fcm->send($messageData);
+$badTokens = $fcm->getBadTokens();
 $updatedTokens = $fcm->getUpdatedTokens();
 
 // $serverKey      Your FCM server key
 // $tokens         An array of registered device tokens
 // $message        The mesasge you want to push out
-// $updatedTokens  An Array of updated registered device tokens
-
-// You should then assign $updatedTokens to $tokens
+// $badTokens      An Array of bad tokens, you should remove these from your database
+// $updatedTokens  An Array of updated tokens in the format: {'old'=>oldToken, 'new'=>newToken}, you should update these in your database
 ```
 
 ##### Android-Client:
