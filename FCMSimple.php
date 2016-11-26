@@ -2,9 +2,10 @@
 /**
  * PHP class to send simple messages using Firebase Cloud Messaging (FCM)
  * 
- * @license GNU GPL version 3.0
+ * @license Apache License, Version 2.0
  * @author Khalid H. Alharisi <coder966@gmail.com>
- * @link https://github.com/coder966/FCMSimple
+ * @link coder966.net
+ * @link github.com/coder966/FCMSimple
  */
 class FCMSimple {
 
