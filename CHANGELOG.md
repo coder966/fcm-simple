@@ -1,6 +1,9 @@
 Changelog
 ===
 
+##### v2.0.1 (26-11-2016):
+* Fix typos
+
 ##### v2.0.0 (12-11-2016):
 * WARNNING: The license has been changed to a less-restrictive license, Apache-2.0
 * WARNNING: getUpdatedTokens() is totally different now. It returns an array of only the updated tokens in the format: {'old'=>oldToken, 'new'=>newToken}.
