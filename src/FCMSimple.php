@@ -1,7 +1,8 @@
 <?php
+
 /**
  * PHP class to send simple messages using Firebase Cloud Messaging (FCM)
- * 
+ *
  * @license Apache License, Version 2.0
  * @author Khalid H. Alharisi <coder966@gmail.com>
  * @link coder966.net
@@ -13,12 +14,11 @@ class FCMSimple {
 	private $tokens = array();
 	private $response;
 
-
 	/**
 	 * Constructor
 	 * @param [string] $serverKey The server key
 	 */
-	public function __construct($serverKey){
+	public function __construct($serverKey) {
 		$this->serverKey = $serverKey;
 	}
 
@@ -26,7 +26,7 @@ class FCMSimple {
 	 * Set the tokens to send to
 	 * @param [array] $deviceTokens Array of device tokens to send to
 	 */
-	public function setTokens(array $deviceTokens){
+	public function setTokens(array $deviceTokens) {
 		$this->tokens = $deviceTokens;
 	}
 
@@ -35,22 +35,22 @@ class FCMSimple {
 	 * @param  [array]  $messageData Array contains keys and values
 	 * @return [json]      	         The response from server
 	 */
-	public function send(array $messageData){
+	public function send(array $messageData) {
 		// check required data
-		if(strlen($this->serverKey) < 20){
+		if (strlen($this->serverKey) < 20) {
 			$this->error("Server Key not set");
 		}
-		if(!is_array($this->tokens) || count($this->tokens) == 0){
+		if (!is_array($this->tokens) || count($this->tokens) == 0) {
 			$this->error("No tokens set");
 		}
 
 		// prepare message
 		$fields = array(
-			"registration_ids"  => $this->tokens,
-			"data"              => $messageData,
+			"registration_ids" => $this->tokens,
+			"data" => $messageData,
 		);
 		$headers = array(
-			"Authorization: key=".$this->serverKey,
+			"Authorization: key=" . $this->serverKey,
 			"Content-Type: application/json"
 		);
 
@@ -61,7 +61,7 @@ class FCMSimple {
 		curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 
 		// Avoid problem with https certificate
@@ -81,7 +81,7 @@ class FCMSimple {
 	 * Stop executing the script and show an error message
 	 * @param  [string] $message Error message
 	 */
-	private function error($message){
+	private function error($message) {
 		echo "Android send notification failed with error:\t$message";
 		exit(1);
 	}
@@ -95,15 +95,13 @@ class FCMSimple {
 	 *
 	 * @return [array] Bad tokens to be removed
 	 */
-	public function getBadTokens(){
+	public function getBadTokens() {
 		$response = json_decode($this->response, true)["results"];
 
 		$badTokens = array();
-		for($i=0; $i<count($this->tokens); $i++){
-			if(isset($response[$i]["error"]) and (
-					($response[$i]["error"] == "MissingRegistration") or
-					($response[$i]["error"] == "InvalidRegistration") or
-					($response[$i]["error"] == "NotRegistered"))){
+		for ($i = 0; $i < count($this->tokens); $i++) {
+			if (isset($response[$i]["error"]) and (
+					($response[$i]["error"] == "MissingRegistration") or ( $response[$i]["error"] == "InvalidRegistration") or ( $response[$i]["error"] == "NotRegistered"))) {
 
 				array_push($badTokens, $this->tokens[$i]);
 			}
@@ -117,18 +115,17 @@ class FCMSimple {
 	 *
 	 * @return [array] An array of format {'old'=>oldToken, 'new'=>newToken}
 	 */
-	public function getUpdatedTokens(){
+	public function getUpdatedTokens() {
 		$response = json_decode($this->response, true)["results"];
 
 		$updatedTokens = array();
-		for($i=0; $i<count($this->tokens); $i++){
-			if(isset($response[$i]["registration_id"])){
+		for ($i = 0; $i < count($this->tokens); $i++) {
+			if (isset($response[$i]["registration_id"])) {
 				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $response[$i]["registration_id"]));
 			}
 		}
 
 		return $updatedTokens;
 	}
-
 
 }
