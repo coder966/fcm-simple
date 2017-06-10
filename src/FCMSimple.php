@@ -51,35 +51,7 @@ class FCMSimple {
 			$this->error("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
-		// prepare the message
-		$fields = array(
-			"registration_ids" => $tempTokens,
-			"data" => $messageData,
-		);
-		$headers = array(
-			"Authorization: key=" . $this->serverKey,
-			"Content-Type: application/json"
-		);
-
-		// Open connection
-		$ch = curl_init();
-
-		// Setup connection
-		curl_setopt($ch, CURLOPT_URL, $this->FCM_SEND_ENDPOINT);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-
-		// Avoid problem with https certificate
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-		// Execute post
-		$this->response = curl_exec($ch);
-
-		// Close connection
-		curl_close($ch);
+		$this->response = $this::_send($this->serverKey, $tempTokens, $messageData);
 
 		return $this->response;
 	}
@@ -133,6 +105,50 @@ class FCMSimple {
 		}
 
 		return $updatedTokens;
+	}
+
+	/**
+	 * A utility function to execute post calls to the send endpoint.
+	 *
+	 * @param string $serverKey FCM server key
+	 * @param array $tokens Array of device tokens
+	 * @param array $message The message
+	 * @return array The response
+	 */
+	private static function _send($serverKey, array $tokens, array $message) {
+		// prepare the headers
+		$headers = array(
+			"Authorization: key={$serverKey}",
+			"Content-Type: application/json"
+		);
+
+		// prepare post fields
+		$postFields = array(
+			"registration_ids" => $tokens,
+			"data" => $message,
+		);
+
+		// open connection
+		$ch = curl_init();
+
+		// setup connection
+		curl_setopt($ch, CURLOPT_URL, $this->FCM_SEND_ENDPOINT);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postFields));
+
+		// avoid problems with https certification
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+		// execute post
+		$response = curl_exec($ch);
+
+		// close connection
+		curl_close($ch);
+
+		return $response;
 	}
 
 }
