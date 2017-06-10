@@ -21,6 +21,9 @@ class FCMSimple {
 	 */
 	public function __construct($serverKey) {
 		$this->serverKey = $serverKey;
+		if (strlen($serverKey) < 20) {
+			$this->error("FCM server key is not set. Please pass it through the constructor.");
+		}
 	}
 
 	/**
@@ -39,22 +42,18 @@ class FCMSimple {
 	 * @return string JSON encoded response
 	 */
 	public function send(array $messageData, array $tokens = null) {
-		// check required data
-		if (strlen($this->serverKey) < 20) {
-			$this->error("FCM server key is not set. Please pass it through the constructor.");
-		}
-		$tempTtokens;
+		// prepare the tokens
 		if (is_array($tokens) && count($tokens) > 0) {
-			$tempTtokens = $tokens;
+			$tempTokens = $tokens;
 		} else if (is_array($this->tokens) && count($this->tokens) > 0) {
-			$tempTtokens = $this->tokens;
+			$tempTokens = $this->tokens;
 		} else {
 			$this->error("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
-		// prepare message
+		// prepare the message
 		$fields = array(
-			"registration_ids" => $tempTtokens,
+			"registration_ids" => $tempTokens,
 			"data" => $messageData,
 		);
 		$headers = array(
