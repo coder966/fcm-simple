@@ -10,43 +10,51 @@
  */
 class FCMSimple {
 
-	private $serverKey = "";
-	private $tokens = array();
+	private static $FCM_SEND_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
+	private $serverKey;
+	private $tokens;
 	private $response;
 
 	/**
 	 * Constructor
-	 * @param [string] $serverKey The server key
+	 * @param string $serverKey FCM server key
 	 */
 	public function __construct($serverKey) {
 		$this->serverKey = $serverKey;
 	}
 
 	/**
-	 * Set the tokens to send to
-	 * @param [array] $deviceTokens Array of device tokens to send to
+	 * Set the default tokens which will be used when no tokens are passed when calling {@link FCMSimple::send()}
+	 * @param array $tokens Array of device tokens to send to
 	 */
-	public function setTokens(array $deviceTokens) {
-		$this->tokens = $deviceTokens;
+	public function setTokens(array $tokens) {
+		$this->tokens = $tokens;
 	}
 
 	/**
 	 * Send message to the tokens
-	 * @param  [array]  $messageData Array contains keys and values
-	 * @return [json]      	         The response from server
+	 * @param array $messageData Message array containing pairs of keys and values
+	 * @param array $tokens [optional] Array of the tokens of the devices to send to.
+	 * Can be null and therefore the array passed through {@link FCMSimple::setTokens($tokens)} will be used.
+	 * @return string JSON encoded response
 	 */
-	public function send(array $messageData) {
+	public function send(array $messageData, array $tokens = null) {
 		// check required data
 		if (strlen($this->serverKey) < 20) {
-			$this->error("Server Key not set");
+			$this->error("FCM server key is not set. Please pass it through the constructor.");
 		}
-		if (!is_array($this->tokens) || count($this->tokens) == 0) {
-			$this->error("No tokens set");
+		$tempTtokens;
+		if (is_array($tokens) && count($tokens) > 0) {
+			$tempTtokens = $tokens;
+		} else if (is_array($this->tokens) && count($this->tokens) > 0) {
+			$tempTtokens = $this->tokens;
+		} else {
+			$this->error("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
 		// prepare message
 		$fields = array(
-			"registration_ids" => $this->tokens,
+			"registration_ids" => $tempTtokens,
 			"data" => $messageData,
 		);
 		$headers = array(
@@ -58,7 +66,7 @@ class FCMSimple {
 		$ch = curl_init();
 
 		// Setup connection
-		curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
+		curl_setopt($ch, CURLOPT_URL, $this->FCM_SEND_ENDPOINT);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -79,21 +87,21 @@ class FCMSimple {
 
 	/**
 	 * Stop executing the script and show an error message
-	 * @param  [string] $message Error message
+	 * @param string $message Error message
 	 */
 	private function error($message) {
-		echo "Android send notification failed with error:\t$message";
+		echo "FCM send message failed with error:\t$message";
 		exit(1);
 	}
 
 	/**
-	 * Returns an array of bad registration ids. You should delete these from your server.
+	 * Returns an array of bad tokens. You should delete these from your server database.
 	 * This method can handle these errors:
-	 * 		1- MissingRegistration : Empty registration id
-	 * 		2- InvalidRegistration : Not even a a registration id, random string
-	 * 		3- NotRegistered       : The device has uninstalled the app
+	 * <li>1- MissingRegistration : Empty device token</li>
+	 * <li>2- InvalidRegistration : Not a device token</li>
+	 * <li>3- NotRegistered : The device has uninstalled the application</li>
 	 *
-	 * @return [array] Bad tokens to be removed
+	 * @return array Bad tokens to be removed
 	 */
 	public function getBadTokens() {
 		$response = json_decode($this->response, true)["results"];
@@ -111,9 +119,9 @@ class FCMSimple {
 	}
 
 	/**
-	 * Returns an array of the updated registration ids. You should update old tokens with the new ones
+	 * Returns an array of the updated tokens. You should update old tokens with the new ones.
 	 *
-	 * @return [array] An array of format {'old'=>oldToken, 'new'=>newToken}
+	 * @return array An array of format {'old'=>oldToken, 'new'=>newToken}
 	 */
 	public function getUpdatedTokens() {
 		$response = json_decode($this->response, true)["results"];
