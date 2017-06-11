@@ -9,7 +9,7 @@ namespace FCMSimple;
  * @link coder966.net
  * @link github.com/coder966/FCMSimple
  */
-class FCMSimple {
+class Client {
 
 	private static $FCM_SEND_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
 	private $serverKey;
@@ -20,7 +20,7 @@ class FCMSimple {
 	 * @param string $serverKey FCM server key
 	 */
 	public function __construct($serverKey) {
-		$valid = FCMSimple::_send($serverKey);
+		$valid = Client::_send($serverKey);
 		if ($valid) {
 			$this->serverKey = $serverKey;
 		}else{
@@ -84,7 +84,7 @@ class FCMSimple {
 		$ch = curl_init();
 
 		// setup connection
-		curl_setopt($ch, CURLOPT_URL, FCMSimple::$FCM_SEND_ENDPOINT);
+		curl_setopt($ch, CURLOPT_URL, Client::$FCM_SEND_ENDPOINT);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
