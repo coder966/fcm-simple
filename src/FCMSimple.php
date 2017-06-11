@@ -14,7 +14,6 @@ class FCMSimple {
 	private static $FCM_SEND_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
 	private $serverKey;
 	private $tokens;
-	public $response;
 
 	/**
 	 * Constructor
@@ -42,7 +41,7 @@ class FCMSimple {
 	 * @param Message $message Message object
 	 * @param array $tokens [optional] Array of the tokens of the devices to send to.
 	 * Can be null and therefore the array passed through {@link FCMSimple::setTokens($tokens)} will be used.
-	 * @return string JSON encoded response
+	 * @return Response A response object regarding the send operation.
 	 */
 	public function send(Message $message, array $tokens = null) {
 		// prepare the tokens
@@ -54,51 +53,7 @@ class FCMSimple {
 			throw new \RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
-		$this->response = $this::_send($this->serverKey, $tempTokens, $message);
-
-		return $this->response;
-	}
-
-	/**
-	 * Returns an array of bad tokens. You should delete these from your server database.
-	 * This method can handle these errors:
-	 * <li>1- MissingRegistration : Empty device token</li>
-	 * <li>2- InvalidRegistration : Not a device token</li>
-	 * <li>3- NotRegistered : The device has uninstalled the application</li>
-	 *
-	 * @return array Bad tokens to be removed
-	 */
-	public function getBadTokens() {
-		$response = json_decode($this->response, true)["results"];
-
-		$badTokens = array();
-		for ($i = 0; $i < count($this->tokens); $i++) {
-			if (isset($response[$i]["error"]) and (
-					($response[$i]["error"] == "MissingRegistration") or ( $response[$i]["error"] == "InvalidRegistration") or ( $response[$i]["error"] == "NotRegistered"))) {
-
-				array_push($badTokens, $this->tokens[$i]);
-			}
-		}
-
-		return $badTokens;
-	}
-
-	/**
-	 * Returns an array of the updated tokens. You should update old tokens with the new ones.
-	 *
-	 * @return array An array of format {'old'=>oldToken, 'new'=>newToken}
-	 */
-	public function getUpdatedTokens() {
-		$response = json_decode($this->response, true)["results"];
-
-		$updatedTokens = array();
-		for ($i = 0; $i < count($this->tokens); $i++) {
-			if (isset($response[$i]["registration_id"])) {
-				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $response[$i]["registration_id"]));
-			}
-		}
-
-		return $updatedTokens;
+		return $this::_send($this->serverKey, $tempTokens, $message);
 	}
 
 	/**
@@ -110,7 +65,7 @@ class FCMSimple {
 	 * @param string $serverKey FCM server key
 	 * @param array [optional] $tokens Array of device tokens
 	 * @param Message [optional] $message The message
-	 * @return array The response
+	 * @return mixed The response if all arguments are passed, boolean otherwise
 	 */
 	private static function _send($serverKey, array $tokens = null, Message $message = null) {
 		// prepare the headers
@@ -156,7 +111,7 @@ class FCMSimple {
 		// close connection
 		curl_close($ch);
 
-		return $response;
+		return new Response($response, $tokens);
 	}
 
 }
