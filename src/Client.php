@@ -1,4 +1,5 @@
 <?php
+
 namespace FCMSimple;
 
 /**
@@ -11,49 +12,63 @@ namespace FCMSimple;
  */
 class Client {
 
+	/**
+	 * FCM send endpoint, should be constant
+	 * @var string
+	 */
 	private static $FCM_SEND_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
+
+	/**
+	 * FCM server key
+	 * @var string
+	 */
 	private $serverKey;
-	private $tokens;
+
+	/**
+	 * Array of the tokens
+	 * @var array
+	 */
+	private $defaultTokens;
 
 	/**
 	 * Constructor
 	 * @param string $serverKey FCM server key
 	 */
 	public function __construct($serverKey) {
-		$valid = Client::_send($serverKey);
+		$valid = Client::performCall($serverKey);
 		if ($valid) {
 			$this->serverKey = $serverKey;
-		}else{
+		} else {
 			throw new \InvalidArgumentException("Invalid FCM server key.");
 		}
 	}
 
 	/**
-	 * Set the default tokens which will be used when no tokens are passed when calling {@link FCMSimple::send()}
+	 * Set the default tokens which will be used when no tokens are passed when calling {@link Client#send()}
 	 * @param array $tokens Array of device tokens to send to
 	 */
 	public function setTokens(array $tokens) {
-		$this->tokens = $tokens;
+		$this->defaultTokens = $tokens;
 	}
 
 	/**
 	 * Send message to the tokens
 	 * @param Message $message Message object
 	 * @param array $tokens [optional] Array of the tokens of the devices to send to.
-	 * Can be null and therefore the array passed through {@link FCMSimple::setTokens($tokens)} will be used.
+	 * Can be null and therefore the array passed through {@link Client#setTokens()} will be used.
 	 * @return Response A response object regarding the send operation.
 	 */
 	public function send(Message $message, array $tokens = null) {
 		// prepare the tokens
 		if (is_array($tokens) && count($tokens) > 0) {
-			$tempTokens = $tokens;
+			$recipientTokens = $tokens;
 		} else if (is_array($this->tokens) && count($this->tokens) > 0) {
-			$tempTokens = $this->tokens;
+			$recipientTokens = $this->defaultTokens;
 		} else {
 			throw new \RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
-		return $this::_send($this->serverKey, $tempTokens, $message);
+		return Client::performCall($this->serverKey, $message, $recipientTokens);
 	}
 
 	/**
@@ -63,11 +78,11 @@ class Client {
 	 * is valid or not.
 	 *
 	 * @param string $serverKey FCM server key
-	 * @param array [optional] $tokens Array of device tokens
 	 * @param Message [optional] $message The message
+	 * @param array [optional] $tokens Array of device tokens
 	 * @return mixed The response if all arguments are passed, boolean otherwise
 	 */
-	private static function _send($serverKey, array $tokens = null, Message $message = null) {
+	private static function performCall($serverKey, Message $message = null, array $tokens = null) {
 		// prepare the headers
 		$headers = array(
 			"Authorization: key={$serverKey}",
@@ -98,12 +113,12 @@ class Client {
 		$response = curl_exec($ch);
 
 		// check server key
-		if($tokens == null && $message == null){
-			curl_setopt($ch, CURLOPT_NOBODY  , true);  // we don't need body
+		if ($tokens == null && $message == null) {
+			curl_setopt($ch, CURLOPT_NOBODY, true);  // we don't need body
 			$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($responseCode == 401){
+			if ($responseCode == 401) {
 				return false;
-			}else{
+			} else {
 				return true;
 			}
 		}
