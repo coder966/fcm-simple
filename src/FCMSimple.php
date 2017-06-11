@@ -1,4 +1,5 @@
 <?php
+namespace FCMSimple;
 
 /**
  * PHP class to send simple messages using Firebase Cloud Messaging (FCM)
@@ -24,7 +25,7 @@ class FCMSimple {
 		if ($valid) {
 			$this->serverKey = $serverKey;
 		}else{
-			throw new RuntimeException("Invalid FCM server key.");
+			throw new \RuntimeException("Invalid FCM server key.");
 		}
 	}
 
@@ -50,7 +51,7 @@ class FCMSimple {
 		} else if (is_array($this->tokens) && count($this->tokens) > 0) {
 			$tempTokens = $this->tokens;
 		} else {
-			throw new RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
+			throw new \RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
 		$this->response = $this::_send($this->serverKey, $tempTokens, $messageData);

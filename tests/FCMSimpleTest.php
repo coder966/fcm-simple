@@ -1,4 +1,5 @@
 <?php
+namespace FCMSimple\Tests;
 
 /**
  * Test case for FCMSimple class
@@ -23,7 +24,7 @@ class FCMSimpleTest extends \PHPUnit\Framework\TestCase {
 		global $argv;
 		$serverKey = $argv[2]; // from the command line
 		include_once '../src/FCMSimple.php';
-		$this->object = new FCMSimple($serverKey);
+		$this->object = new \FCMSimple\FCMSimple($serverKey);
 	}
 
 	/**
@@ -38,9 +39,9 @@ class FCMSimpleTest extends \PHPUnit\Framework\TestCase {
 	 * @covers FCMSimple::__construct
 	 */
 	public function testInvalidServerKey() {
-		$this->expectException(RuntimeException::class);
+		$this->expectException(\RuntimeException::class);
 		$this->expectExceptionMessage("Invalid FCM server key.");
-		new FCMSimple("invalid-server-key");
+		new \FCMSimple\FCMSimple("invalid-server-key");
 	}
 
 	/**
