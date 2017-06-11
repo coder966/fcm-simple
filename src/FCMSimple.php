@@ -24,7 +24,7 @@ class FCMSimple {
 		if ($valid) {
 			$this->serverKey = $serverKey;
 		}else{
-			$this->error("Invalid FCM server key.");
+			throw new RuntimeException("Invalid FCM server key.");
 		}
 	}
 
@@ -50,21 +50,12 @@ class FCMSimple {
 		} else if (is_array($this->tokens) && count($this->tokens) > 0) {
 			$tempTokens = $this->tokens;
 		} else {
-			$this->error("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
+			throw new RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
 		$this->response = $this::_send($this->serverKey, $tempTokens, $messageData);
 
 		return $this->response;
-	}
-
-	/**
-	 * Stop executing the script and show an error message
-	 * @param string $message Error message
-	 */
-	private function error($message) {
-		echo "FCM send message failed with error:\t$message";
-		exit(1);
 	}
 
 	/**
