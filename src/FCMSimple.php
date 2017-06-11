@@ -13,16 +13,18 @@ class FCMSimple {
 	private static $FCM_SEND_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
 	private $serverKey;
 	private $tokens;
-	private $response;
+	public $response;
 
 	/**
 	 * Constructor
 	 * @param string $serverKey FCM server key
 	 */
 	public function __construct($serverKey) {
-		$this->serverKey = $serverKey;
-		if (strlen($serverKey) < 20) {
-			$this->error("FCM server key is not set. Please pass it through the constructor.");
+		$valid = FCMSimple::_send($serverKey);
+		if ($valid) {
+			$this->serverKey = $serverKey;
+		}else{
+			$this->error("Invalid FCM server key.");
 		}
 	}
 
@@ -109,13 +111,16 @@ class FCMSimple {
 
 	/**
 	 * A utility function to execute post calls to the send endpoint.
+	 * Pass null for (or just skip) $tokens and $message if you want to check the server key,
+	 * the function will return a boolean indicating whether the passed server key
+	 * is valid or not.
 	 *
 	 * @param string $serverKey FCM server key
-	 * @param array $tokens Array of device tokens
-	 * @param array $message The message
+	 * @param array [optional] $tokens Array of device tokens
+	 * @param array [optional] $message The message
 	 * @return array The response
 	 */
-	private static function _send($serverKey, array $tokens, array $message) {
+	private static function _send($serverKey, array $tokens = null, array $message = null) {
 		// prepare the headers
 		$headers = array(
 			"Authorization: key={$serverKey}",
@@ -132,7 +137,7 @@ class FCMSimple {
 		$ch = curl_init();
 
 		// setup connection
-		curl_setopt($ch, CURLOPT_URL, $this->FCM_SEND_ENDPOINT);
+		curl_setopt($ch, CURLOPT_URL, FCMSimple::$FCM_SEND_ENDPOINT);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -144,6 +149,17 @@ class FCMSimple {
 
 		// execute post
 		$response = curl_exec($ch);
+
+		// check server key
+		if($tokens == null && $message == null){
+			curl_setopt($ch, CURLOPT_NOBODY  , true);  // we don't need body
+			$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($responseCode == 401){
+				return false;
+			}else{
+				return true;
+			}
+		}
 
 		// close connection
 		curl_close($ch);
