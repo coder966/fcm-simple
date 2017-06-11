@@ -1,9 +1,6 @@
 FCMSimple
 ===
-A PHP class to send messages to devices registered through Firebase Cloud Messaging (FCM).
-
-- Adapted from the code available at [GCM-PHP-Server-Push-Message](https://github.com/mattg888/GCM-PHP-Server-Push-Message) with some modifications to work with FCM instead of GCM.
-- Add new features `getBadTokens` and `getUpdatedTokens`.
+A simple PHP library to send messages to devices registered through Firebase Cloud Messaging (FCM).
 
 
 Usage
