@@ -59,6 +59,10 @@ class Client {
 	 * @return Response A response object regarding the send operation.
 	 */
 	public function send(Message $message, array $tokens = null) {
+		if ($message == null) {
+			throw new \InvalidArgumentException("The message cannot be null.");
+		}
+
 		// prepare the tokens
 		if (is_array($tokens) && count($tokens) > 0) {
 			$recipientTokens = $tokens;
