@@ -24,7 +24,7 @@ class FCMSimpleTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp() {
 		global $argv;
 		$serverKey = $argv[2]; // from the command line
-		include_once '../src/FCMSimple.php';
+		include_once '../src/Client.php';
 		$this->object = new \FCMSimple\Client($serverKey);
 	}
 
