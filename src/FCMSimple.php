@@ -25,7 +25,7 @@ class FCMSimple {
 		if ($valid) {
 			$this->serverKey = $serverKey;
 		}else{
-			throw new \RuntimeException("Invalid FCM server key.");
+			throw new \InvalidArgumentException("Invalid FCM server key.");
 		}
 	}
 

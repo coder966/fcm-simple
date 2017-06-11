@@ -39,8 +39,7 @@ class FCMSimpleTest extends \PHPUnit\Framework\TestCase {
 	 * @covers FCMSimple::__construct
 	 */
 	public function testInvalidServerKey() {
-		$this->expectException(\RuntimeException::class);
-		$this->expectExceptionMessage("Invalid FCM server key.");
+		$this->expectException(\InvalidArgumentException::class);
 		new \FCMSimple\FCMSimple("invalid-server-key");
 	}
 
