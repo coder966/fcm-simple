@@ -39,12 +39,12 @@ class FCMSimple {
 
 	/**
 	 * Send message to the tokens
-	 * @param array $messageData Message array containing pairs of keys and values
+	 * @param Message $message Message object
 	 * @param array $tokens [optional] Array of the tokens of the devices to send to.
 	 * Can be null and therefore the array passed through {@link FCMSimple::setTokens($tokens)} will be used.
 	 * @return string JSON encoded response
 	 */
-	public function send(array $messageData, array $tokens = null) {
+	public function send(Message $message, array $tokens = null) {
 		// prepare the tokens
 		if (is_array($tokens) && count($tokens) > 0) {
 			$tempTokens = $tokens;
@@ -54,7 +54,7 @@ class FCMSimple {
 			throw new \RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
 		}
 
-		$this->response = $this::_send($this->serverKey, $tempTokens, $messageData);
+		$this->response = $this::_send($this->serverKey, $tempTokens, $message);
 
 		return $this->response;
 	}
@@ -109,10 +109,10 @@ class FCMSimple {
 	 *
 	 * @param string $serverKey FCM server key
 	 * @param array [optional] $tokens Array of device tokens
-	 * @param array [optional] $message The message
+	 * @param Message [optional] $message The message
 	 * @return array The response
 	 */
-	private static function _send($serverKey, array $tokens = null, array $message = null) {
+	private static function _send($serverKey, array $tokens = null, Message $message = null) {
 		// prepare the headers
 		$headers = array(
 			"Authorization: key={$serverKey}",
@@ -122,7 +122,7 @@ class FCMSimple {
 		// prepare post fields
 		$postFields = array(
 			"registration_ids" => $tokens,
-			"data" => $message,
+			"data" => $message->map,
 		);
 
 		// open connection
