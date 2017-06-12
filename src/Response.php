@@ -15,10 +15,10 @@ namespace FCMSimple;
 class Response {
 
 	/**
-	 * JSON decoded response
+	 * JSON decoded response results
 	 * @var array
 	 */
-	private $response;
+	private $responseResults;
 
 	/**
 	 * Array of the tokens sent along with the request
@@ -27,12 +27,13 @@ class Response {
 	private $tokens;
 
 	/**
+	 * Create the response object to deal with it.
 	 *
 	 * @param string $response JSON encoded response
 	 * @param array $tokens The tokens sent along with the request
 	 */
 	public function __construct($response, array $tokens) {
-		$this->response = json_decode($response, true);
+		$this->responseResults = json_decode($response, true)["results"];
 		$this->tokens = $tokens;
 	}
 
@@ -46,13 +47,16 @@ class Response {
 	 * @return array Bad tokens to be removed
 	 */
 	public function getBadTokens() {
-		$response = $response["results"];
+		// error types
+		$errorTypes = array(
+			"MissingRegistration",
+			"InvalidRegistration",
+			"NotRegistered"
+		);
 
 		$badTokens = array();
 		for ($i = 0; $i < count($this->tokens); $i++) {
-			if (isset($response[$i]["error"]) and (
-					($response[$i]["error"] == "MissingRegistration") or ( $response[$i]["error"] == "InvalidRegistration") or ( $response[$i]["error"] == "NotRegistered"))) {
-
+			if (in_array($this->responseResults[$i]["error"], $errorTypes)) {
 				array_push($badTokens, $this->tokens[$i]);
 			}
 		}
@@ -61,17 +65,15 @@ class Response {
 	}
 
 	/**
-	 * Returns an array of the updated tokens. You should update old tokens with the new ones.
+	 * Returns an array of the updated tokens. You should update old tokens with the new ones for future requests; otherwise, the messages might be rejected.
 	 *
-	 * @return array An array of format {'old'=>oldToken, 'new'=>newToken}
+	 * @return array An array where each element is also an array of the format <code>{'old'=>oldToken, 'new'=>newToken}</code>
 	 */
 	public function getUpdatedTokens() {
-		$response = $response["results"];
-
 		$updatedTokens = array();
 		for ($i = 0; $i < count($this->tokens); $i++) {
-			if (isset($response[$i]["registration_id"])) {
-				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $response[$i]["registration_id"]));
+			if (isset($this->responseResults[$i]["registration_id"])) {
+				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $this->responseResults[$i]["registration_id"]));
 			}
 		}
 
