@@ -1,5 +1,8 @@
 FCMSimple
 ===
+[![Latest Stable Version](https://poser.pugx.org/coder966/fcm-simple/v/stable)](https://packagist.org/packages/coder966/fcm-simple)
+[![License](https://poser.pugx.org/coder966/fcm-simple/license)](https://packagist.org/packages/coder966/fcm-simple)
+
 A simple PHP library to send messages to devices registered through Firebase Cloud Messaging (FCM).
 
 
