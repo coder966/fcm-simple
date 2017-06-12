@@ -4,6 +4,11 @@ FCMSimple
 [![License](https://poser.pugx.org/coder966/fcm-simple/license)](https://packagist.org/packages/coder966/fcm-simple)
 
 A simple PHP library to send messages to devices registered through Firebase Cloud Messaging (FCM).
+Features:
+- Lightweight & simple
+- Zero dependencies
+- Provides you with the tokens you should (remove/update) from your database.
+- Implemented using cURL
 
 
 Usage
