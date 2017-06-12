@@ -1,5 +1,14 @@
 Changelog
 ===
+##### v3.0.0 (12-06-2017):
+* Upgrade to PHP 5.4
+* Completely new API. Not backward-compatible.
+* Start using namespace "FCMSimple".
+* Three new classes (Client, Message, Response). Removing the old single class.
+* Real server key validation.
+* Add tests using PHPUnit.
+* Throw exceptions rather than showing errors.
+* Use NetBeans IDE.
 
 ##### v2.0.1 (26-11-2016):
 * Fix typos
