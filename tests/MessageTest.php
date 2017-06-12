@@ -1,6 +1,6 @@
 <?php
 
-namespace FCMSimple;
+namespace FCMSimple\Tests;
 
 /**
  * Test case for Message class

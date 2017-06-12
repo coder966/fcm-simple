@@ -1,6 +1,6 @@
 <?php
 
-namespace FCMSimple\Tests;
+namespace FCMSimple;
 
 /**
  * Message class holds pair of keys and values to be sent.
