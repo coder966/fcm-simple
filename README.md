@@ -21,26 +21,50 @@ $ composer require coder966/fcm-simple
 
 ##### PHP-Server:
 ```php
-require 'vendor/autoload.php'; // Load composer dependencies
+require 'vendor/autoload.php';
 
-$fcm = new FCMSimple($serverKey);
-$fcm->setTokens($tokens);
-$messageData = array("key1"=>"value1", "key2"=>"value2" ...);
-$response = $fcm->send($messageData);
-$badTokens = $fcm->getBadTokens();
-$updatedTokens = $fcm->getUpdatedTokens();
+use FCMSimple\Client;
+use FCMSimple\Message;
+use FCMSimple\Response;
 
-// $serverKey      Your FCM server key
-// $tokens         An array of registered device tokens
-// $message        The mesasge you want to push out
-// $badTokens      An Array of bad tokens, you should remove these from your database
-// $updatedTokens  An Array of updated tokens in the format: {'old'=>oldToken, 'new'=>newToken}, you should update these in your database
+// prepare your array of tokens
+$tokens = array(
+	"token_1",
+	"token_2",
+	"token_3"
+);
+
+// create the client
+$client = new Client("YOUR_SERVER_KEY");
+
+// create the message
+$msg = new Message();
+$msg->add("key1", "value1");
+$msg->add("key2", "value2");
+
+// send the message and receive the response
+$response = $client->send($msg, $tokens);
+
+// an array of the tokens that are not valid anymore, you should remove them from your DB
+$badTokens = $response->getBadTokens();
+foreach ($badTokens as $token) {
+	// remove $token from your DB
+}
+
+// an array of the tokens that have got updated, you should update them in your DB
+$updatedTokens = $response->getUpdatedTokens();
+foreach ($updatedTokens as $token) {
+	// update $token["old"] with $token["new"] in your DB
+}
 ```
 
 ##### Android-Client:
-In the service that extends `FirebaseMessagingService`, in method `onMessageReceived` use:
+In the service that extends `FirebaseMessagingService`, in method `onMessageReceived`, use:
 ```java
 Map<String, String> msg = remoteMessage.getData();
+String value1 = msg.get("key1");
+String value2 = msg.get("key2");
+String value3 = msg.get("key3");
 ```
 
 
