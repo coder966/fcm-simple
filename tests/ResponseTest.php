@@ -2,6 +2,8 @@
 
 namespace FCMSimple\Tests;
 
+use FCMSimple\Response;
+
 require_once 'src/Response.php';
 
 /**
@@ -53,7 +55,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 		);
 		$this->fixtureResponse = json_encode($this->fixtureResponse);
 
-		$this->object = new \FCMSimple\Response($this->fixtureResponse, $this->fixtureTokens);
+		$this->object = new Response($this->fixtureResponse, $this->fixtureTokens);
 	}
 
 	/**
@@ -65,7 +67,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers FCMSimple\Response::getBadTokens
+	 * @covers Response::getBadTokens
 	 */
 	public function testGetBadTokens() {
 		$expextedBadTokens = array(
@@ -78,7 +80,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers FCMSimple\Response::getUpdatedTokens
+	 * @covers Response::getUpdatedTokens
 	 */
 	public function testGetUpdatedTokens() {
 		$expextedUpdatedTokens = array(

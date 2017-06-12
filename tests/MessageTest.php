@@ -2,6 +2,10 @@
 
 namespace FCMSimple\Tests;
 
+use FCMSimple\Message;
+
+require_once 'src/Message.php';
+
 /**
  * Test case for Message class
  *
@@ -22,7 +26,6 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
-		require_once '../src/Message.php';
 		$this->object = new Message();
 	}
 
@@ -35,7 +38,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers FCMSimple\Message
+	 * @covers Message
 	 */
 	public function test() {
 		$fixture = array(

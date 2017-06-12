@@ -2,6 +2,10 @@
 
 namespace FCMSimple\Tests;
 
+use FCMSimple\Message;
+use FCMSimple\Response;
+use FCMSimple\Client;
+
 require_once 'src/Message.php';
 require_once 'src/Response.php';
 require_once 'src/Client.php';
@@ -28,7 +32,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp() {
 		global $argv;
 		$serverKey = $argv[2]; // from the command line
-		$this->object = new \FCMSimple\Client($serverKey);
+		$this->object = new Client($serverKey);
 	}
 
 	/**
@@ -44,7 +48,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testInvalidServerKey() {
 		$this->expectException(\InvalidArgumentException::class);
-		new \FCMSimple\Client("invalid-server-key");
+		new Client("invalid-server-key");
 	}
 
 	/**
@@ -55,7 +59,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 	public function testTokens() {
 		$this->expectException(\RuntimeException::class);
 
-		$message = new \FCMSimple\Message();
+		$message = new Message();
 		$message->add("key", "val");
 
 		$this->object->send($message);
@@ -65,7 +69,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 	 * @covers Client::send
 	 */
 	public function testSend() {
-		$message = new \FCMSimple\Message();
+		$message = new Message();
 		$message->add("type", "NEW_POSTS");
 
 		$tokens = array(
