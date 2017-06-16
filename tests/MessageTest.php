@@ -49,6 +49,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 			"collapse_key" => "TestCollapseKey",
 			"priority" => "high",
 			"time_to_live" => 30,
+			"restricted_package_name" => "net.coder966.fcm",
 			"dry_run" => true,
 		);
 
@@ -57,6 +58,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 		$this->object->setCollapseKey("TestCollapseKey");
 		$this->object->setPriority(Message::PRIORITY_HIGH);
 		$this->object->setTimeToLive(30);
+		$this->object->setRestrictedPackageName("net.coder966.fcm");
 		$this->object->setDryRun();
 
 		$fields = $this->object->fields;

@@ -96,6 +96,16 @@ class Message {
 	}
 
 	/**
+	 * Specifies the package name of the application where the registration
+	 * tokens must match in order to receive the message.
+	 *
+	 * @param string $packageName Restricted package name
+	 */
+	public function setRestrictedPackageName($packageName) {
+		$this->fields["restricted_package_name"] = $packageName;
+	}
+
+	/**
 	 * When set to true, allows developers to test a request without actually
 	 * sending a message. The default value is false.
 	 *
