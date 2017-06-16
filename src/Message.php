@@ -12,6 +12,9 @@ namespace FCMSimple;
  */
 class Message {
 
+	const PRIORITY_NORMAL = "normal";
+	const PRIORITY_HIGH = "high";
+
 	/**
 	 * message fields
 	 * @var array
@@ -56,6 +59,27 @@ class Message {
 	 */
 	public function setCollapseKey($key) {
 		$this->fields["collapse_key"] = $key;
+	}
+
+	/**
+	 * Sets the priority of the message. Valid values are:
+	 * {@link Message::PRIORITY_NORMAL} and {@link Message::PRIORITY_HIGH}
+	 *
+	 * By default, messages are sent with normal priority.
+	 *
+	 * Normal priority optimises the client app's battery consumption and should
+	 * be used unless immediate delivery is required. For messages with normal
+	 * priority, the app may receive the message with unspecified delay.
+	 *
+	 * When a message is sent with high priority, it is sent immediately, and the
+	 * app can wake a sleeping device and open a network connection to your server.
+	 *
+	 * For more information, see {@link https://firebase.google.com/docs/cloud-messaging/concept-options#setting-the-priority-of-a-message}
+	 *
+	 * @param type $priority Message Priority
+	 */
+	public function setPriority($priority) {
+		$this->fields["priority"] = $priority;
 	}
 
 	/**
