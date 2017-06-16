@@ -76,7 +76,7 @@ class Message {
 	 *
 	 * For more information, see {@link https://firebase.google.com/docs/cloud-messaging/concept-options#setting-the-priority-of-a-message}
 	 *
-	 * @param type $priority Message Priority
+	 * @param string $priority Message Priority
 	 */
 	public function setPriority($priority) {
 		$this->fields["priority"] = $priority;
@@ -89,7 +89,7 @@ class Message {
 	 *
 	 * For more information, see {@link https://firebase.google.com/docs/cloud-messaging/concept-options#ttl}
 	 *
-	 * @param type $time Time to live
+	 * @param int $time Time to live
 	 */
 	public function setTimeToLive($time) {
 		$this->fields["time_to_live"] = $time;
