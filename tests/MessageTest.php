@@ -47,13 +47,15 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 				"key2" => "val2"
 			),
 			"collapse_key" => "TestCollapseKey",
-			"priority" => "high"
+			"priority" => "high",
+			"time_to_live" => 30,
 		);
 
 		$this->object->add("key1", "val1");
 		$this->object->add("key2", "val2");
 		$this->object->setCollapseKey("TestCollapseKey");
 		$this->object->setPriority(Message::PRIORITY_HIGH);
+		$this->object->setTimeToLive(30);
 
 		$fields = $this->object->fields;
 

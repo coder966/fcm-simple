@@ -83,6 +83,19 @@ class Message {
 	}
 
 	/**
+	 * This parameter specifies how long (in seconds) the message should be kept
+	 * in FCM storage if the device is offline. The maximum time to live
+	 * supported is 4 weeks, and the default value is 4 weeks.
+	 *
+	 * For more information, see {@link https://firebase.google.com/docs/cloud-messaging/concept-options#ttl}
+	 *
+	 * @param type $time Time to live
+	 */
+	public function setTimeToLive($time) {
+		$this->fields["time_to_live"] = $time;
+	}
+
+	/**
 	 * This is meant to be used only internally
 	 * @return array The data map
 	 */
