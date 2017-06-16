@@ -13,16 +13,18 @@ namespace FCMSimple;
 class Message {
 
 	/**
-	 * Pairs of keys and values
+	 * message fields
 	 * @var array
 	 */
-	private $map;
+	private $fields;
 
 	/**
 	 * Create new message
 	 */
 	public function __construct() {
-		$this->map = array();
+		$this->fields = array(
+			"data" => array(),
+		);
 	}
 
 	/**
@@ -31,7 +33,7 @@ class Message {
 	 * @param string $value
 	 */
 	public function add($key, $value) {
-		$this->map[$key] = $value;
+		$this->fields["data"][$key] = $value;
 	}
 
 	/**
@@ -39,8 +41,8 @@ class Message {
 	 * @return array The data map
 	 */
 	public function __get($field) {
-		if ($field == "map") {
-			return $this->map;
+		if ($field == "fields") {
+			return $this->fields;
 		}
 	}
 

@@ -93,11 +93,9 @@ class Client {
 			"Content-Type: application/json"
 		);
 
-		// prepare post fields
-		$postFields = array(
-			"registration_ids" => $tokens,
-			"data" => $message->map,
-		);
+		// inject tokens into the message
+		$messge = $message->fields;
+		$messge["registration_ids"] = $tokens;
 
 		// open connection
 		$ch = curl_init();
@@ -107,7 +105,7 @@ class Client {
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postFields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messge));
 
 		// avoid problems with https certification
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);

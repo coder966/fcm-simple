@@ -42,16 +42,18 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function test() {
 		$fixture = array(
-			"key1" => "val1",
-			"key2" => "val2"
+			"data" => array(
+				"key1" => "val1",
+				"key2" => "val2"
+			)
 		);
 
 		$this->object->add("key1", "val1");
 		$this->object->add("key2", "val2");
 
-		$map = $this->object->map;
+		$fields = $this->object->fields;
 
-		$this->assertEquals($fixture, $map);
+		$this->assertEquals($fixture, $fields);
 	}
 
 }
