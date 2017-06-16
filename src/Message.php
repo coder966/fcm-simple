@@ -96,6 +96,16 @@ class Message {
 	}
 
 	/**
+	 * When set to true, allows developers to test a request without actually
+	 * sending a message. The default value is false.
+	 *
+	 * @param bool $dryRun Dry Run ?
+	 */
+	public function setDryRun($dryRun = true) {
+		$this->fields["dry_run"] = $dryRun;
+	}
+
+	/**
 	 * This is meant to be used only internally
 	 * @return array The data map
 	 */

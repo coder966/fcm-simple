@@ -49,6 +49,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 			"collapse_key" => "TestCollapseKey",
 			"priority" => "high",
 			"time_to_live" => 30,
+			"dry_run" => true,
 		);
 
 		$this->object->add("key1", "val1");
@@ -56,6 +57,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 		$this->object->setCollapseKey("TestCollapseKey");
 		$this->object->setPriority(Message::PRIORITY_HIGH);
 		$this->object->setTimeToLive(30);
+		$this->object->setDryRun();
 
 		$fields = $this->object->fields;
 
