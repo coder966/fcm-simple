@@ -45,11 +45,13 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 			"data" => array(
 				"key1" => "val1",
 				"key2" => "val2"
-			)
+			),
+			"collapse_key" => "TestCollapseKey"
 		);
 
 		$this->object->add("key1", "val1");
 		$this->object->add("key2", "val2");
+		$this->object->setCollapseKey("TestCollapseKey");
 
 		$fields = $this->object->fields;
 
