@@ -13,6 +13,7 @@ Features:
 
 Usage
 ---
+For further details, see the [Wiki](https://github.com/coder966/FCMSimple/blob/master/Wiki.md "Wiki")
 ##### Installation:
 Run the following command in your project-root directory
 ```
