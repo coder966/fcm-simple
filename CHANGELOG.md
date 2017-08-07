@@ -1,5 +1,9 @@
 Changelog
 ===
+##### v3.1.0 (17-08-2017):
+* Support more message params (CollapseKey, Priority, TimeToLive, DryRun, RestrictedPackageName)
+* Add Wiki
+
 ##### v3.0.0 (12-06-2017):
 * Upgrade to PHP 5.4
 * Completely new API. Not backward-compatible.
