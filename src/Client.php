@@ -66,7 +66,7 @@ class Client {
 		// prepare the tokens
 		if (count($tokens) > 0) {
 			$recipientTokens = $tokens;
-		} else if (count($this->tokens) > 0) {
+		} else if (count($this->defaultTokens) > 0) {
 			$recipientTokens = $this->defaultTokens;
 		} else {
 			throw new \RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
