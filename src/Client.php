@@ -87,16 +87,6 @@ class Client {
 	 * @return mixed The response if all arguments are passed, boolean otherwise
 	 */
 	private static function performCall($serverKey, Message $message = null, array $tokens = null) {
-		// prepare the headers
-		$headers = array(
-			"Authorization: key={$serverKey}",
-			"Content-Type: application/json"
-		);
-
-		// inject tokens into the message
-		$messge = $message->fields;
-		$messge["registration_ids"] = $tokens;
-
 		// open connection
 		$ch = curl_init();
 
@@ -104,8 +94,23 @@ class Client {
 		curl_setopt($ch, CURLOPT_URL, Client::$FCM_SEND_ENDPOINT);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		// request header
+		$headers = array(
+			"Authorization: key={$serverKey}",
+			"Content-Type: application/json",
+			"Content-Length: 0"
+		);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messge));
+
+		// request body
+		if($message != null && $tokens != null){
+			$messageBody = $message->fields;
+			$messageBody["registration_ids"] = $tokens;
+		}else{
+			$messageBody = "";
+		}
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messageBody));
 
 		// avoid problems with https certification
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
