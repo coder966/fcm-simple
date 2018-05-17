@@ -60,7 +60,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 		$this->expectException(\RuntimeException::class);
 
 		$message = new Message();
-		$message->add("key", "val");
+		$message->put("key", "val");
 
 		$this->object->send($message);
 	}
@@ -70,7 +70,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testSend() {
 		$message = new Message();
-		$message->add("type", "NEW_POSTS");
+		$message->put("type", "NEW_POSTS");
 
 		$tokens = array(
 			"token1",

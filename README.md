@@ -40,8 +40,8 @@ $client = new Client("YOUR_SERVER_KEY");
 
 // create the message
 $msg = new Message();
-$msg->add("key1", "value1");
-$msg->add("key2", "value2");
+$msg->put("key1", "value1");
+$msg->put("key2", "value2");
 
 // send the message and receive the response
 $response = $client->send($msg, $tokens);

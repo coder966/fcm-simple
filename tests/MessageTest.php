@@ -44,7 +44,9 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 		$fixture = array(
 			"data" => array(
 				"key1" => "val1",
-				"key2" => "val2"
+				"key2" => "val2",
+				"key3" => "val3",
+				"key4" => "val4"
 			),
 			"collapse_key" => "TestCollapseKey",
 			"priority" => "high",
@@ -55,6 +57,8 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 
 		$this->object->add("key1", "val1");
 		$this->object->add("key2", "val2");
+		$this->object->put("key3", "val3");
+		$this->object->put("key4", "val4");
 		$this->object->setCollapseKey("TestCollapseKey");
 		$this->object->setPriority(Message::PRIORITY_HIGH);
 		$this->object->setTimeToLive(30);
