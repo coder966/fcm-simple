@@ -70,26 +70,26 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	 * @covers Response::getBadTokens
 	 */
 	public function testGetBadTokens() {
-		$expextedBadTokens = array(
+		$expectedBadTokens = array(
 			"token_number_3"
 		);
 
 		$badTokens = $this->object->getBadTokens();
 
-		$this->assertEquals($expextedBadTokens, $badTokens);
+		$this->assertEquals($expectedBadTokens, $badTokens);
 	}
 
 	/**
 	 * @covers Response::getUpdatedTokens
 	 */
 	public function testGetUpdatedTokens() {
-		$expextedUpdatedTokens = array(
+		$expectedUpdatedTokens = array(
 			array("old" => "token_number_2", "new" => "updated_token")
 		);
 
 		$updatedTokens = $this->object->getUpdatedTokens();
 
-		$this->assertEquals($expextedUpdatedTokens, $updatedTokens);
+		$this->assertEquals($expectedUpdatedTokens, $updatedTokens);
 	}
 
 }
