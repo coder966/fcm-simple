@@ -1,7 +1,7 @@
 {
 	"name": "coder966/fcm-simple",
 	"type": "library",
-	"description": "PHP simple application server implementation for Firebase Cloud Messaging",
+	"description": "Simple PHP library for Firebase Cloud Messaging",
 	"keywords": ["Firebase", "Cloud", "Messaging", "FCM", "Android", "iOS", "PHP"],
 	"homepage": "https://github.com/coder966/FCMSimple",
 	"license": "Apache-2.0",
