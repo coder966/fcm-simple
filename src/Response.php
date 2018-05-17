@@ -56,8 +56,10 @@ class Response {
 
 		$badTokens = array();
 		for ($i = 0; $i < count($this->tokens); $i++) {
-			if (in_array($this->responseResults[$i]["error"], $errorTypes)) {
-				array_push($badTokens, $this->tokens[$i]);
+			if(isset($this->responseResults[$i]["error"])){
+				if (in_array($this->responseResults[$i]["error"], $errorTypes)) {
+					array_push($badTokens, $this->tokens[$i]);
+				}
 			}
 		}
 
