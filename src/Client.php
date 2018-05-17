@@ -6,7 +6,7 @@ namespace FCMSimple;
  * PHP class to send simple messages using Firebase Cloud Messaging (FCM)
  *
  * @license Apache License, Version 2.0
- * @author Khalid H. Alharisi <coder966@gmail.com>
+ * @author Khalid H. Alharisi <me@coder966.net>
  * @link coder966.net
  * @link github.com/coder966/FCMSimple
  */

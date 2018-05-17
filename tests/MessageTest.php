@@ -10,7 +10,7 @@ require_once 'src/Message.php';
  * Test case for Message class
  *
  * @license Apache License, Version 2.0
- * @author Khalid H. Alharisi <coder966@gmail.com>
+ * @author Khalid H. Alharisi <me@coder966.net>
  * @link coder966.net
  * @link github.com/coder966/FCMSimple
  */
