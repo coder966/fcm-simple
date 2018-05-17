@@ -1,5 +1,14 @@
 Changelog
 ===
+##### v3.2.0 (17-05-2018):
+* Raise minimum required version of PHP to 5.6.0.
+* Deprecate Message#add. Use Message#put instead.
+* Fix: Not being able to use default tokens.
+* Minor some tests fail due to PHP notice.
+* Require PHPUnit using composer.
+* Remove Netbeans files.
+* Minor improvements.
+
 ##### v3.1.0 (17-08-2017):
 * Support more message params (CollapseKey, Priority, TimeToLive, DryRun, RestrictedPackageName)
 * Add Wiki
