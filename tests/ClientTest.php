@@ -11,7 +11,7 @@ require_once 'src/Response.php';
 require_once 'src/Client.php';
 
 /**
- * Test case for ClientTest class
+ * Test case for Client class
  *
  * @license Apache License, Version 2.0
  * @author Khalid H. Alharisi <me@coder966.net>
@@ -21,7 +21,7 @@ require_once 'src/Client.php';
 class ClientTest extends \PHPUnit\Framework\TestCase {
 
 	/**
-	 * @var ClientTest
+	 * @var Client
 	 */
 	protected $object;
 
