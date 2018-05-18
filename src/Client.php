@@ -98,8 +98,7 @@ class Client {
 		// request header
 		$headers = array(
 			"Authorization: key={$serverKey}",
-			"Content-Type: application/json",
-			"Content-Length: 0"
+			"Content-Type: application/json"
 		);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
