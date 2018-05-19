@@ -1,5 +1,8 @@
 Changelog
 ===
+##### v3.2.1 (19-05-2018):
+* Fix fatal bug preventing messages from being sent.
+
 ##### v3.2.0 (17-05-2018):
 * Raise minimum required version of PHP to 5.6.0.
 * Deprecate Message#add. Use Message#put instead.
