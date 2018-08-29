@@ -26,7 +26,9 @@ require 'vendor/autoload.php';
 
 use FCMSimple\Client;
 use FCMSimple\Message;
-use FCMSimple\Response;
+
+// create the client
+$client = new Client("YOUR_SERVER_KEY");
 
 // prepare your array of tokens
 $tokens = array(
@@ -35,28 +37,13 @@ $tokens = array(
     "token_3"
 );
 
-// create the client
-$client = new Client("YOUR_SERVER_KEY");
-
 // create the message
 $msg = new Message();
 $msg->put("key1", "value1");
 $msg->put("key2", "value2");
 
-// send the message and receive the response
-$response = $client->send($msg, $tokens);
-
-// an array of the tokens that are not valid anymore, you should remove them from your DB
-$badTokens = $response->getBadTokens();
-foreach ($badTokens as $token) {
-    // remove $token from your DB
-}
-
-// an array of the tokens that have got updated, you should update them in your DB
-$updatedTokens = $response->getUpdatedTokens();
-foreach ($updatedTokens as $token) {
-    // update $token["old"] with $token["new"] in your DB
-}
+// send the message
+$client->send($msg, $tokens);
 ```
 
 ##### Android-Client:
@@ -65,7 +52,6 @@ In the service that extends `FirebaseMessagingService`, in method `onMessageRece
 Map<String, String> msg = remoteMessage.getData();
 String value1 = msg.get("key1");
 String value2 = msg.get("key2");
-String value3 = msg.get("key3");
 ```
 
 
