@@ -57,7 +57,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 	 * @covers Client::send
 	 */
 	public function testTokens() {
-		$this->expectException(\RuntimeException::class);
+		$this->expectException(\InvalidArgumentException::class);
 
 		$message = new Message();
 		$message->put("key", "val");

@@ -35,6 +35,7 @@ class Client {
 	 * @param string $serverKey FCM server key
 	 */
 	public function __construct($serverKey) {
+		$this->defaultTokens = array();
 		$valid = Client::performCall($serverKey);
 		if ($valid) {
 			$this->serverKey = $serverKey;
@@ -63,13 +64,16 @@ class Client {
 			throw new \InvalidArgumentException("The message cannot be null.");
 		}
 
-		// prepare the tokens
-		if (count($tokens) > 0) {
+		// choose which array
+		if ($tokens != null) {
 			$recipientTokens = $tokens;
-		} else if (count($this->defaultTokens) > 0) {
-			$recipientTokens = $this->defaultTokens;
 		} else {
-			throw new \RuntimeException("Tokens not set. Pass them through FCMSimple::send()'s second argument or through FCMSimple::setTokens.");
+			$recipientTokens = $this->defaultTokens;
+		}
+
+		// check if empty
+		if(count($recipientTokens) == 0){
+			throw new \InvalidArgumentException("Tokens array cannot be empty.");
 		}
 
 		return Client::performCall($this->serverKey, $message, $recipientTokens);
