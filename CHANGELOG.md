@@ -1,5 +1,10 @@
 Changelog
 ===
+##### v3.3.0 (29-08-2018):
+* Add Response#isSuccessful
+* Deprecate Client#setTokens
+* Bug fixes
+
 ##### v3.2.1 (19-05-2018):
 * Fix fatal bug preventing messages from being sent.
 
