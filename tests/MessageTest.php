@@ -70,4 +70,18 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals($fixture, $fields);
 	}
 
+	/**
+	 * @covers Message::put
+	 */
+	public function testTooBigMessage() {
+		$this->expectException(\RuntimeException::class);
+
+		$message = new Message();
+		for($i=100; $i<999; $i++){
+			// length is 3+3+3+3=12 chars => size is 12*8 = 96 bytes
+			// 4096/96 = 42.xxx so must fail after 43 iterations
+			$message->put("key".$i, "val".$i);
+		}
+	}
+
 }

@@ -32,12 +32,12 @@ class Message {
 
 	/**
 	 * @deprecated This method is deprecated. Use {@link Message#put} instead.
-	 * Add a pair of data
+	 * Put a pair of data (key->value)
 	 * @param string $key
 	 * @param string $value
 	 */
 	public function add($key, $value) {
-		$this->fields["data"][$key] = $value;
+		$this->put($key, $value);
 	}
 
 	/**
@@ -47,6 +47,11 @@ class Message {
 	 */
 	public function put($key, $value) {
 		$this->fields["data"][$key] = $value;
+		// check size limit
+		$size = strlen(serialize($this->fields["data"]));
+		if($size > 4096){
+			throw new \RuntimeException("Message size exceeds FCM limit. Maximum size is 4096 bytes.");
+		}
 	}
 
 	/**
