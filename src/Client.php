@@ -83,8 +83,11 @@ class Client {
 		}
 
 		// check if empty
-		if(count($recipientTokens) == 0){
+		$count = count($recipientTokens);
+		if($count == 0){
 			throw new \InvalidArgumentException("Tokens array cannot be empty.");
+		}else if($count > 1000){
+			throw new \Exception("Too many tokens provided. The total number of tokens used in a single push cannot exceed 1000 tokens. Please chunk your tokens array.");
 		}
 
 		return Client::performCall($this->serverKey, $message, $recipientTokens);
