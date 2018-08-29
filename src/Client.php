@@ -45,6 +45,7 @@ class Client {
 	}
 
 	/**
+	 * @deprecated
 	 * Set the default tokens which will be used when no tokens are passed when calling {@link Client#send()}
 	 * @param array $tokens Array of device tokens to send to
 	 */
