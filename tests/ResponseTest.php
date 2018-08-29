@@ -27,9 +27,14 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	private $fixtureTokens;
 
 	/**
-	 * @var string JSON encoded
+	 * @var string HTTP response code
 	 */
-	private $fixtureResponse;
+	private $fixtureResponseCode;
+
+	/**
+	 * @var string HTTP response body
+	 */
+	private $fixtureResponseBody;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -42,7 +47,9 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 			"token_number_3"
 		);
 
-		$this->fixtureResponse = array(
+		$this->fixtureResponseCode = 200;
+
+		$this->fixtureResponseBody = array(
 			"multicast_id" => 123456789,
 			"success" => 1,
 			"failure" => 2,
@@ -53,9 +60,9 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 				array("error" => "InvalidRegistration")
 			)
 		);
-		$this->fixtureResponse = json_encode($this->fixtureResponse);
+		$this->fixtureResponseBody = json_encode($this->fixtureResponseBody);
 
-		$this->object = new Response($this->fixtureResponse, $this->fixtureTokens);
+		$this->object = new Response($this->fixtureResponseCode, $this->fixtureResponseBody, $this->fixtureTokens);
 	}
 
 	/**
@@ -64,6 +71,17 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function tearDown() {
 
+	}
+
+	/**
+	 * @covers Response::isSuccessful
+	 */
+	public function testIsSuccessful() {
+		$expectedIsSuccessful = true;
+
+		$isSuccessful = $this->object->isSuccessful();
+
+		$this->assertEquals($expectedIsSuccessful, $isSuccessful);
 	}
 
 	/**

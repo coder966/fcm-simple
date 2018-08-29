@@ -36,8 +36,18 @@ class Client {
 	 */
 	public function __construct($serverKey) {
 		$this->defaultTokens = array();
-		$valid = Client::performCall($serverKey);
-		if ($valid) {
+
+		// prepare a dry run
+		$message = new Message();
+		$message->put("", "");
+		$message->setDryRun(true);
+		$tokens = array("");
+
+		// preform a call
+		$response = Client::performCall($serverKey, $message, $tokens);
+
+		// check server key validity
+		if ($response->isSuccessful()) {
 			$this->serverKey = $serverKey;
 		} else {
 			throw new \InvalidArgumentException("Invalid FCM server key.");
@@ -81,17 +91,19 @@ class Client {
 	}
 
 	/**
-	 * A utility function to execute post calls to the send endpoint.
-	 * Pass null for (or just skip) $tokens and $message if you want to check the server key,
-	 * the function will return a boolean indicating whether the passed server key
-	 * is valid or not.
+	 * A utility function to execute post calls to FCM's send endpoint.
 	 *
 	 * @param string $serverKey FCM server key
-	 * @param Message [optional] $message The message
-	 * @param array [optional] $tokens Array of device tokens
-	 * @return mixed The response if all arguments are passed, boolean otherwise
+	 * @param Message $message The message
+	 * @param array $tokens Array of device tokens
+	 * @return Response The resulting response
 	 */
-	private static function performCall($serverKey, Message $message = null, array $tokens = null) {
+	private static function performCall($serverKey, Message $message, array $tokens) {
+		// check arguments
+		if($serverKey == null || !is_string($serverKey)){
+			throw new \InvalidArgumentException("Invalid FCM server key.");
+		}
+		
 		// open connection
 		$ch = curl_init();
 
@@ -99,6 +111,10 @@ class Client {
 		curl_setopt($ch, CURLOPT_URL, Client::$FCM_SEND_ENDPOINT);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		// avoid problems with https certification
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 		// request header
 		$headers = array(
@@ -108,36 +124,19 @@ class Client {
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 		// request body
-		if($message != null && $tokens != null){
-			$messageBody = $message->fields;
-			$messageBody["registration_ids"] = $tokens;
-		}else{
-			$messageBody = "";
-		}
+		$messageBody = $message->fields;
+		$messageBody["registration_ids"] = $tokens;
+
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messageBody));
 
-		// avoid problems with https certification
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-		// execute post
-		$response = curl_exec($ch);
-
-		// check server key
-		if ($tokens == null && $message == null) {
-			curl_setopt($ch, CURLOPT_NOBODY, true);  // we don't need body
-			$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if ($responseCode == 401) {
-				return false;
-			} else {
-				return true;
-			}
-		}
+		// execute call
+		$responseBody = curl_exec($ch);
+		$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 		// close connection
 		curl_close($ch);
 
-		return new Response($response, $tokens);
+		return new Response($responseCode, $responseBody, $tokens);
 	}
 
 }

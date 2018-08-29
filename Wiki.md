@@ -21,6 +21,7 @@ You may find more information about these options in methods' PHPDocs or in http
 ## Response
 A `Response` is returned after sending a `Message`. A `Response` have these methods:
 
+* `Response#isSuccessful`: To indicate whether the request was successfully understood and executed by FCM server. This is not about devices actually receiving the message.
 * `Response#getBadTokens`: Returns an array of bad tokens. You should delete these from your server database.
 * `Response#getUpdatedTokens`: Returns an array of the updated tokens. You should update old tokens with the new ones for future requests; otherwise, the messages might be rejected.
 

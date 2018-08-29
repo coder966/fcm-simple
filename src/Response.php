@@ -15,10 +15,16 @@ namespace FCMSimple;
 class Response {
 
 	/**
-	 * JSON decoded response results
+	 * HTTP response code == 200
+	 * @var bool
+	 */
+	private $isSuccessful;
+
+	/**
+	 * The "results" array
 	 * @var array
 	 */
-	private $responseResults;
+	private $results;
 
 	/**
 	 * Array of the tokens sent along with the request
@@ -29,12 +35,24 @@ class Response {
 	/**
 	 * Create the response object to deal with it.
 	 *
-	 * @param string $response JSON encoded response
+	 * @param int $responseCode Response http code
+	 * @param string $responseBody Response body
 	 * @param array $tokens The tokens sent along with the request
 	 */
-	public function __construct($response, array $tokens) {
-		$this->responseResults = json_decode($response, true)["results"];
+	public function __construct($responseCode, $responseBody, array $tokens) {
+		$this->isSuccessful = $responseCode == 200;
+		$this->results = json_decode($responseBody, true)["results"];
 		$this->tokens = $tokens;
+	}
+
+	/**
+	 * To indicate whether the request was successfully understood and executed by FCM server.
+	 * This is not about devices actually receiving the message.
+	 *
+	 * @return boolean Is successful ?
+	 */
+	public function isSuccessful(){
+		return $this->isSuccessful;
 	}
 
 	/**
@@ -56,8 +74,8 @@ class Response {
 
 		$badTokens = array();
 		for ($i = 0; $i < count($this->tokens); $i++) {
-			if(isset($this->responseResults[$i]["error"])){
-				if (in_array($this->responseResults[$i]["error"], $errorTypes)) {
+			if(isset($this->results[$i]["error"])){
+				if (in_array($this->results[$i]["error"], $errorTypes)) {
 					array_push($badTokens, $this->tokens[$i]);
 				}
 			}
@@ -74,8 +92,8 @@ class Response {
 	public function getUpdatedTokens() {
 		$updatedTokens = array();
 		for ($i = 0; $i < count($this->tokens); $i++) {
-			if (isset($this->responseResults[$i]["registration_id"])) {
-				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $this->responseResults[$i]["registration_id"]));
+			if (isset($this->results[$i]["registration_id"])) {
+				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $this->results[$i]["registration_id"]));
 			}
 		}
 
