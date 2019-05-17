@@ -82,7 +82,7 @@ class Client {
 		}
 
         $httpResponse = Client::performCall($this->serverKey, $message, $recipientTokens);
-        return new Response($httpResponse[0], $httpResponse[1], $tokens);
+        return new Response($httpResponse[0], $httpResponse[1], $recipientTokens);
 	}
 
 	/**
