@@ -30,9 +30,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
-		global $argv;
-		$serverKey = $argv[2]; // from the command line
-		$this->object = new Client($serverKey);
+		$this->object = new Client(SERVER_KEY);
 	}
 
 	/**
