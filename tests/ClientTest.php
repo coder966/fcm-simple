@@ -14,7 +14,7 @@ require_once 'src/Client.php';
  * Test case for Client class
  *
  * @license Apache License, Version 2.0
- * @author Khalid H. Alharisi <me@coder966.net>
+ * @author Khalid H. Alharisi <coder966@gmail.com>
  * @link coder966.net
  * @link github.com/coder966/FCMSimple
  */

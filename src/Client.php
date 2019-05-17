@@ -3,17 +3,17 @@
 namespace FCMSimple;
 
 /**
- * PHP class to send simple messages using Firebase Cloud Messaging (FCM)
+ * A client used to pass messages from your app server to client apps via Firebase Cloud Messaging (FCM).
  *
  * @license Apache License, Version 2.0
- * @author Khalid H. Alharisi <me@coder966.net>
+ * @author Khalid H. Alharisi <coder966@gmail.com>
  * @link coder966.net
  * @link github.com/coder966/FCMSimple
  */
 class Client {
 
 	/**
-	 * FCM send endpoint, should be constant
+	 * FCM API send endpoint
 	 * @var string
 	 */
 	private static $FCM_SEND_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
@@ -25,7 +25,7 @@ class Client {
 	private $serverKey;
 
 	/**
-	 * Array of the tokens
+	 * Array of the default tokens
 	 * @var array
 	 */
 	private $defaultTokens;
@@ -55,11 +55,11 @@ class Client {
 	}
 
 	/**
-	 * Send message to the tokens
-	 * @param Message $message Message object
+	 * Send a message to the specified devices.
+	 * @param \FCMSimple\Message $message Message object
 	 * @param array $tokens [optional] Array of the tokens of the devices to send to.
 	 * Can be null and therefore the array passed through {@link Client#setTokens()} will be used.
-	 * @return Response A response object regarding the send operation.
+	 * @return \FCMSimple\Response A response object regarding the send operation.
 	 */
 	public function send(Message $message, array $tokens = null) {
 		if ($message == null) {
@@ -89,7 +89,7 @@ class Client {
 	 * A utility function to execute post calls to FCM's send endpoint.
 	 *
 	 * @param string $serverKey FCM server key
-	 * @param Message $message The message
+	 * @param \FCMSimple\Message $message The message
 	 * @param array $tokens Array of device tokens
 	 * @return array array[0]: response code, array[1]: response body
 	 */
