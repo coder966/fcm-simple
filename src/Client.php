@@ -35,21 +35,12 @@ class Client {
 	 * @param string $serverKey FCM server key
 	 */
 	public function __construct($serverKey) {
-		$this->defaultTokens = array();
+        $this->serverKey = $serverKey;
+        $this->defaultTokens = array();
 
-		// prepare a dry run
-		$message = new Message();
-		$message->put("", "");
-		$message->setDryRun(true);
-		$tokens = array("");
-
-		// preform a call
-		$response = Client::performCall($serverKey, $message, $tokens);
-
-		// check server key validity
-		if ($response->isSuccessful()) {
-			$this->serverKey = $serverKey;
-		} else {
+		// preform a call just to validate server key
+		$httpResponse = Client::performCall($serverKey, new Message(), []);
+		if ($httpResponse[0] == 401) {
 			throw new \InvalidArgumentException("Invalid FCM server key.");
 		}
 	}
@@ -90,7 +81,8 @@ class Client {
 			throw new \Exception("Too many tokens provided. The total number of tokens used in a single push cannot exceed 1000 tokens. Please chunk your tokens array.");
 		}
 
-		return Client::performCall($this->serverKey, $message, $recipientTokens);
+        $httpResponse = Client::performCall($this->serverKey, $message, $recipientTokens);
+        return new Response($httpResponse[0], $httpResponse[1], $tokens);
 	}
 
 	/**
@@ -99,14 +91,9 @@ class Client {
 	 * @param string $serverKey FCM server key
 	 * @param Message $message The message
 	 * @param array $tokens Array of device tokens
-	 * @return Response The resulting response
+	 * @return array array[0]: response code, array[1]: response body
 	 */
 	private static function performCall($serverKey, Message $message, array $tokens) {
-		// check arguments
-		if($serverKey == null || !is_string($serverKey)){
-			throw new \InvalidArgumentException("Invalid FCM server key.");
-		}
-		
 		// open connection
 		$ch = curl_init();
 
@@ -128,18 +115,18 @@ class Client {
 
 		// request body
 		$messageBody = $message->fields;
-		$messageBody["registration_ids"] = $tokens;
+        $messageBody["registration_ids"] = $tokens;
 
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messageBody));
 
-		// execute call
-		$responseBody = curl_exec($ch);
-		$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        // execute call
+        $httpResponse[1] = curl_exec($ch);
+		$httpResponse[0] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 		// close connection
 		curl_close($ch);
 
-		return new Response($responseCode, $responseBody, $tokens);
+		return $httpResponse;
 	}
 
 }
