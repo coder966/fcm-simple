@@ -1,54 +1,94 @@
-Changelog
-===
-##### v3.3.0 (29-08-2018):
-* Add Response#isSuccessful
-* Deprecate Client#setTokens
-* Bug fixes
+﻿# Changelog
+All notable changes to this project will be documented in this file.
 
-##### v3.2.1 (19-05-2018):
-* Fix fatal bug preventing messages from being sent.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-##### v3.2.0 (17-05-2018):
-* Raise minimum required version of PHP to 5.6.0.
-* Deprecate Message#add. Use Message#put instead.
-* Fix: Not being able to use default tokens.
-* Minor some tests fail due to PHP notice.
-* Require PHPUnit using composer.
-* Remove Netbeans files.
-* Minor improvements.
 
-##### v3.1.0 (17-08-2017):
-* Support more message params (CollapseKey, Priority, TimeToLive, DryRun, RestrictedPackageName)
-* Add Wiki
+## [3.3.0] - 2018-08-29
 
-##### v3.0.0 (12-06-2017):
-* Upgrade to PHP 5.4
-* Completely new API. Not backward-compatible.
-* Start using namespace "FCMSimple".
-* Three new classes (Client, Message, Response). Removing the old single class.
-* Real server key validation.
-* Add tests using PHPUnit.
-* Throw exceptions rather than showing errors.
-* Use NetBeans IDE.
+### Added
+- Response#isSuccessful()
 
-##### v2.0.1 (26-11-2016):
-* Fix typos
+### Changed
+- Deprecate Client#setTokens(tokens: array)
+- Improve Wiki and README examples
 
-##### v2.0.0 (12-11-2016):
-* WARNNING: The license has been changed to a less-restrictive license, Apache-2.0
-* WARNNING: getUpdatedTokens() is totally different now. It returns an array of only the updated tokens in the format: {'old'=>oldToken, 'new'=>newToken}.
-* Add: getBadTokens() which returns an array of the tokens you should remove from your database.
+### Fixed
+- Client may just fail silently if a message is larger than what FCM expect. It now throws an exception.
+- Client may just fail silently if tokens array exceeds FCM limit. It now throws an exception.
 
-##### v1.2.1 (20-7-2016):
-* Fix in Composer support
+## [3.2.1] - 2018-05-19
 
-##### v1.2 (20-7-2016):
-* Support Composer
+### Fixed
+- Header content-length was hard-coded to 0
 
-##### v1.1 (10-7-2016):
-* Support sending array instead of plain string
-* Rename setDevices() to setTokens()
-* Rename fixDevices() to getUpdatedTokens()
+## [3.2.0] - 2018-05-17
 
-##### v1.0 (17-6-2016):
-* Initial release
+### Changed
+- Raise minimum required version of PHP to 5.6.0.
+- Deprecate Message#add. Use Message#put instead.
+- Minor improvements.
+
+### Fixed
+- Not being able to use default tokens
+- Tests fail due to PHP notice
+
+## [3.1.0] - 2017-08-17
+
+### Added
+- Support more message params:
+    - setCollapseKey
+    - setPriority
+    - setTimeToLive
+    - setDryRun
+    - setRestrictedPackageName
+- Add Wiki
+
+## [3.0.0] - 2017-06-12
+
+### Added
+- Real server key validation
+- Add tests using PHPUnit
+
+### Changed
+- Upgrade to PHP 5.4
+- Completely new API. Not backward-compatible
+- Introducing namespaces
+- Throw exceptions rather than showing errors
+
+## [2.0.1] - 2016-11-26
+
+### Fixed
+- Fix typos
+
+## [2.0.0] - 2016-11-12
+WARNNING: The license has been changed to a less-restrictive license, Apache-2.0
+
+### Added
+- getBadTokens() which returns an array of the tokens you should remove from your database
+
+### Changed
+- getUpdatedTokens() now returns an array of only the updated tokens in the format: {'old'=>oldToken, 'new'=>newToken}
+
+## [1.2.1] - 2016-07-20
+
+### Fixed
+- Fix in Composer support
+
+## [1.2] - 2016-07-20
+
+### Added
+- Support for installation through Composer
+
+## [1.1] - 2016-07-10
+
+### Added
+- Support for sending array instead of plain string
+
+### Changed
+- Rename setDevices() to setTokens()
+- Rename fixDevices() to getUpdatedTokens()
+
+## [1.0] - 2016-06-17
+Initial release
