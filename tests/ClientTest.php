@@ -20,62 +20,62 @@ require_once 'src/Client.php';
  */
 class ClientTest extends \PHPUnit\Framework\TestCase {
 
-	/**
-	 * @var Client
-	 */
-	protected $object;
+    /**
+     * @var Client
+     */
+    protected $object;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		$this->object = new Client(SERVER_KEY);
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp() {
+        $this->object = new Client(SERVER_KEY);
+    }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown() {
 
-	}
+    }
 
-	/**
-	 * @covers Client::__construct
-	 */
-	public function testInvalidServerKey() {
-		$this->expectException(\InvalidArgumentException::class);
-		new Client("invalid-server-key");
-	}
+    /**
+     * @covers Client::__construct
+     */
+    public function testInvalidServerKey() {
+        $this->expectException(\InvalidArgumentException::class);
+        new Client("invalid-server-key");
+    }
 
-	/**
-	 * Tests not setting any tokens
-	 * @covers Client::setTokens
-	 * @covers Client::send
-	 */
-	public function testTokens() {
-		$this->expectException(\InvalidArgumentException::class);
+    /**
+     * Tests not setting any tokens
+     * @covers Client::setTokens
+     * @covers Client::send
+     */
+    public function testTokens() {
+        $this->expectException(\InvalidArgumentException::class);
 
-		$message = new Message();
-		$message->put("key", "val");
+        $message = new Message();
+        $message->put("key", "val");
 
-		$this->object->send($message);
-	}
+        $this->object->send($message);
+    }
 
-	/**
-	 * @covers Client::send
-	 */
-	public function testSend() {
-		$message = new Message();
-		$message->put("type", "NEW_POSTS");
+    /**
+     * @covers Client::send
+     */
+    public function testSend() {
+        $message = new Message();
+        $message->put("type", "NEW_POSTS");
 
-		$tokens = [
-			"token1",
-			"token2"
+        $tokens = [
+            "token1",
+            "token2"
         ];
 
-		$this->object->send($message, $tokens);
-	}
+        $this->object->send($message, $tokens);
+    }
 
 }

@@ -16,98 +16,98 @@ require_once 'src/Response.php';
  */
 class ResponseTest extends \PHPUnit\Framework\TestCase {
 
-	/**
-	 * @var Response
-	 */
-	protected $object;
+    /**
+     * @var Response
+     */
+    protected $object;
 
-	/**
-	 * @var array
-	 */
-	private $fixtureTokens;
+    /**
+     * @var array
+     */
+    private $fixtureTokens;
 
-	/**
-	 * @var string HTTP response code
-	 */
-	private $fixtureResponseCode;
+    /**
+     * @var string HTTP response code
+     */
+    private $fixtureResponseCode;
 
-	/**
-	 * @var string HTTP response body
-	 */
-	private $fixtureResponseBody;
+    /**
+     * @var string HTTP response body
+     */
+    private $fixtureResponseBody;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		$this->fixtureTokens = [
-			"token_number_1",
-			"token_number_2",
-			"token_number_3"
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp() {
+        $this->fixtureTokens = [
+            "token_number_1",
+            "token_number_2",
+            "token_number_3"
         ];
 
-		$this->fixtureResponseCode = 200;
+        $this->fixtureResponseCode = 200;
 
-		$this->fixtureResponseBody = [
-			"multicast_id" => 123456789,
-			"success" => 1,
-			"failure" => 2,
-			"canonical_ids" => 1,
-			"results" => [
-				["message_id" => "0:123456789abcdef"],
-				["message_id" => "0:123456789abcdef", "registration_id" => "updated_token"],
-				["error" => "InvalidRegistration"]
+        $this->fixtureResponseBody = [
+            "multicast_id" => 123456789,
+            "success" => 1,
+            "failure" => 2,
+            "canonical_ids" => 1,
+            "results" => [
+                ["message_id" => "0:123456789abcdef"],
+                ["message_id" => "0:123456789abcdef", "registration_id" => "updated_token"],
+                ["error" => "InvalidRegistration"]
             ]
         ];
-		$this->fixtureResponseBody = json_encode($this->fixtureResponseBody);
+        $this->fixtureResponseBody = json_encode($this->fixtureResponseBody);
 
-		$this->object = new Response($this->fixtureResponseCode, $this->fixtureResponseBody, $this->fixtureTokens);
-	}
+        $this->object = new Response($this->fixtureResponseCode, $this->fixtureResponseBody, $this->fixtureTokens);
+    }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown() {
 
-	}
+    }
 
-	/**
-	 * @covers Response::isSuccessful
-	 */
-	public function testIsSuccessful() {
-		$expectedIsSuccessful = true;
+    /**
+     * @covers Response::isSuccessful
+     */
+    public function testIsSuccessful() {
+        $expectedIsSuccessful = true;
 
-		$isSuccessful = $this->object->isSuccessful();
+        $isSuccessful = $this->object->isSuccessful();
 
-		$this->assertEquals($expectedIsSuccessful, $isSuccessful);
-	}
+        $this->assertEquals($expectedIsSuccessful, $isSuccessful);
+    }
 
-	/**
-	 * @covers Response::getBadTokens
-	 */
-	public function testGetBadTokens() {
-		$expectedBadTokens = [
-			"token_number_3"
+    /**
+     * @covers Response::getBadTokens
+     */
+    public function testGetBadTokens() {
+        $expectedBadTokens = [
+            "token_number_3"
         ];
 
-		$badTokens = $this->object->getBadTokens();
+        $badTokens = $this->object->getBadTokens();
 
-		$this->assertEquals($expectedBadTokens, $badTokens);
-	}
+        $this->assertEquals($expectedBadTokens, $badTokens);
+    }
 
-	/**
-	 * @covers Response::getUpdatedTokens
-	 */
-	public function testGetUpdatedTokens() {
-		$expectedUpdatedTokens = [
-			["old" => "token_number_2", "new" => "updated_token"]
+    /**
+     * @covers Response::getUpdatedTokens
+     */
+    public function testGetUpdatedTokens() {
+        $expectedUpdatedTokens = [
+            ["old" => "token_number_2", "new" => "updated_token"]
         ];
 
-		$updatedTokens = $this->object->getUpdatedTokens();
+        $updatedTokens = $this->object->getUpdatedTokens();
 
-		$this->assertEquals($expectedUpdatedTokens, $updatedTokens);
-	}
+        $this->assertEquals($expectedUpdatedTokens, $updatedTokens);
+    }
 
 }
