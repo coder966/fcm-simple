@@ -25,33 +25,17 @@ class Client {
     private $serverKey;
 
     /**
-     * Array of the default tokens
-     * @var array
-     */
-    private $defaultTokens;
-
-    /**
      * Constructor
      * @param string $serverKey FCM server key
      */
     public function __construct($serverKey) {
         $this->serverKey = $serverKey;
-        $this->defaultTokens = [];
 
         // preform a call just to validate server key
         $httpResponse = Client::performCall($serverKey, new Message(), []);
         if ($httpResponse[0] == 401) {
             throw new \InvalidArgumentException("Invalid FCM server key.");
         }
-    }
-
-    /**
-     * @deprecated
-     * Set the default tokens which will be used when no tokens are passed when calling {@link Client#send()}
-     * @param array $tokens Array of device tokens to send to
-     */
-    public function setTokens(array $tokens) {
-        $this->defaultTokens = $tokens;
     }
 
     /**
@@ -78,39 +62,31 @@ class Client {
     /**
      * Send a message to the specified tokens.
      * @param \FCMSimple\Message $message Message object
-     * @param array $tokens [optional] Array of the tokens of the devices to send to.
-     * Can be null and therefore the array passed through {@link Client#setTokens()} will be used.
+     * @param array $tokens Array of the tokens of the devices to send to.
      * @return \FCMSimple\Response A response object regarding the send operation.
      */
-    public function sendToTokens(Message $message, array $tokens = null) {
+    public function sendToTokens(Message $message, array $tokens) {
         if ($message == null) {
             throw new \InvalidArgumentException("The message cannot be null.");
         }
 
-        // choose which array
-        if ($tokens != null) {
-            $recipientTokens = $tokens;
-        } else {
-            $recipientTokens = $this->defaultTokens;
-        }
-
-        // check if empty
-        $count = count($recipientTokens);
-        if($count == 0){
+        if ($tokens == null) {
+            throw new \InvalidArgumentException("Tokens array cannot be null.");
+        }else if(count($tokens) == 0){
             throw new \InvalidArgumentException("Tokens array cannot be empty.");
         }
 
         // chunk tokens array to avoid arrays exceeding 1000 which is the limit defined by FCM
         $isSuccessful = true;
         $results = [];
-        $chunks = array_chunk($recipientTokens, 1000, false);
+        $chunks = array_chunk($tokens, 1000, false);
         foreach($chunks as $chunk){
             $httpResponse = Client::performCall($this->serverKey, $message, $chunk);
             $isSuccessful = $isSuccessful && ($httpResponse[0] == 200);
             $results = array_merge($results, json_decode($httpResponse[1], true)["results"]);
         }
 
-        return new Response($isSuccessful ? 200 : 500, json_encode(["results"=>$results]), $recipientTokens);
+        return new Response($isSuccessful ? 200 : 500, json_encode(["results"=>$results]), $tokens);
     }
 
     /**

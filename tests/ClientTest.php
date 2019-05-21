@@ -62,7 +62,6 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * Tests not setting any tokens
-     * @covers Client::setTokens
      * @covers Client::sendToTokens
      */
     public function testEmptyTokensArray() {
