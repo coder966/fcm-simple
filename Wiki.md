@@ -1,5 +1,5 @@
 # Wiki
-A brief wiki explaining the library's API.
+A brief wiki explaining library's API.
 
 ## Overview
 You first will need to create a `Client` that can send `Message`s. You can send as many `Message`s as you need using the same `Client` object. `Message` objects can also be reused.
@@ -7,7 +7,7 @@ You first will need to create a `Client` that can send `Message`s. You can send 
 When you send a `Message`, a `Response` object will return from the `Client#send` method. You may, but you don't have to, store the `Response` in a variable so that you can access its useful methods.
 
 ## Client
-The `Client` is responsible for sending `Message`s and returning `Response`s. When you send a `Message`, tokens must be set either by `Client#setTokens` (DEPRECATED) or `Client#send`'s second argument. To create a `Client` object, you need to pass your valid FCM server key via the constructor; otherwise, an exception will be thrown. 
+The `Client` is responsible for sending `Message`s and returning `Response`s. When you send a `Message`, tokens must be set either by `Client#setTokens` (DEPRECATED) or `Client#send`'s second argument. To create a `Client` object, you need to pass your valid FCM server key via the constructor; otherwise, an exception will be thrown.
 
 ## Message
 You can put pairs of data (keys and corresponding values) via `Message#put` method. There are also some options you can set on your `Message` using the following methods:

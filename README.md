@@ -1,5 +1,5 @@
-FCMSimple
-===
+# FCMSimple
+
 [![Latest Stable Version](https://poser.pugx.org/coder966/fcm-simple/v/stable)](https://packagist.org/packages/coder966/fcm-simple)
 [![License](https://poser.pugx.org/coder966/fcm-simple/license)](https://packagist.org/packages/coder966/fcm-simple)
 
@@ -11,16 +11,15 @@ Features:
 - Implemented using cURL
 
 
-Usage
----
+## Usage
 For further details, see the [Wiki](https://github.com/coder966/FCMSimple/blob/master/Wiki.md "Wiki")
-##### Installation:
-Run the following command in your project-root directory
+### Installation
+You need PHP >= 5.4
 ```
 $ composer require coder966/fcm-simple
 ```
 
-##### PHP-Server:
+### PHP Server
 ```php
 require 'vendor/autoload.php';
 
@@ -46,7 +45,7 @@ $msg->put("key2", "value2");
 $client->send($msg, $tokens);
 ```
 
-##### Android-Client:
+### Android Client
 In the service that extends `FirebaseMessagingService`, in method `onMessageReceived`, use:
 ```java
 Map<String, String> msg = remoteMessage.getData();
@@ -55,8 +54,8 @@ String value2 = msg.get("key2");
 ```
 
 
-License
----
+## License
+
 ```
 Copyright 2016 Khalid H. Alharisi
 
