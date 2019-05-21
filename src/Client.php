@@ -55,6 +55,7 @@ class Client {
     }
 
     /**
+     * @deprecated use {@link Client#sendToTokens()}
      * Send a message to the specified devices.
      * @param \FCMSimple\Message $message Message object
      * @param array $tokens [optional] Array of the tokens of the devices to send to.
@@ -62,6 +63,17 @@ class Client {
      * @return \FCMSimple\Response A response object regarding the send operation.
      */
     public function send(Message $message, array $tokens = null) {
+        $this->sendToTokens($message, $tokens);
+    }
+
+    /**
+     * Send a message to the specified tokens.
+     * @param \FCMSimple\Message $message Message object
+     * @param array $tokens [optional] Array of the tokens of the devices to send to.
+     * Can be null and therefore the array passed through {@link Client#setTokens()} will be used.
+     * @return \FCMSimple\Response A response object regarding the send operation.
+     */
+    public function sendToTokens(Message $message, array $tokens = null) {
         if ($message == null) {
             throw new \InvalidArgumentException("The message cannot be null.");
         }
