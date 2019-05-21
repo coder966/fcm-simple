@@ -55,16 +55,19 @@ class Response {
     }
 
     /**
-     * Returns an array of bad tokens. You should delete these from your server database.
-     * This method can handle these errors:
-     * <li>1- MissingRegistration : Empty device token</li>
-     * <li>2- InvalidRegistration : Not a device token</li>
-     * <li>3- NotRegistered : The device has uninstalled the application</li>
-     *
-     * @return array Bad tokens to be removed
+     * @deprecated use {@link Client#getInvalidTokens()}
+     * Returns an array of invalid / no longer valid tokens. You should delete these from your server database.
+     * @return array Invalid tokens to be removed
      */
     public function getBadTokens() {
-        // error types
+        return $this->getInvalidTokens();
+    }
+
+    /**
+     * Returns an array of invalid / no longer valid tokens. You should delete these from your server database.
+     * @return array Invalid tokens to be removed
+     */
+    public function getInvalidTokens() {
         $errorTypes = [
             "MissingRegistration",
             "InvalidRegistration",
