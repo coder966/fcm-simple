@@ -5,6 +5,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.0.0] - 2019-05-21
+
+### Added
+- Support for topics via `Client#sendToTopic`
+- General improvements
+
+### Changed
+- Update repository url
+- Update WiKi and README to match the updated API
+
+### Removed
+- Deprecated method `Client#send`
+- Deprecated method `Client#setTokens`
+- Deprecated method `Message#add`
+- Deprecated method `Response#getBadTokens`
+
+
 ## [3.4.0] - 2019-05-21
 
 ### Added
