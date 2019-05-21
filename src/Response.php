@@ -20,13 +20,21 @@ class Response {
     private $isSuccessful;
 
     /**
+     * A flag to know by which method this object is created
+     * @var bool
+     */
+    private $tokensUsed;
+
+    /**
      * The "results" array
+     * Used only whit Client#sendToTokens
      * @var array
      */
     private $results;
 
     /**
      * Array of the tokens sent along with the request
+     * Used only whit Client#sendToTokens
      * @var array
      */
     private $tokens;
@@ -36,12 +44,19 @@ class Response {
      *
      * @param int $responseCode Response http code
      * @param string $responseBody Response body
-     * @param array $tokens The tokens sent along with the request
+     * @param array $tokens [Optional] The tokens sent along with the request
      */
-    public function __construct($responseCode, $responseBody, array $tokens) {
+    public function __construct($responseCode, $responseBody, array $tokens = null) {
         $this->isSuccessful = $responseCode == 200;
-        $this->results = json_decode($responseBody, true)["results"];
-        $this->tokens = $tokens;
+
+        $body = json_decode($responseBody, true);
+        if(isset($body["multicast_id"])){
+            $this->tokensUsed = true;
+            $this->results = $body["results"];
+            $this->tokens = $tokens;
+        }else{
+            $this->tokensUsed = false;
+        }
     }
 
     /**
@@ -68,6 +83,10 @@ class Response {
      * @return array Invalid tokens to be removed
      */
     public function getInvalidTokens() {
+        if(!$this->tokensUsed){
+            return [];
+        }
+
         $errorTypes = [
             "MissingRegistration",
             "InvalidRegistration",
@@ -92,6 +111,10 @@ class Response {
      * @return array An array where each element is also an array of the format <code>{'old'=>oldToken, 'new'=>newToken}</code>
      */
     public function getUpdatedTokens() {
+        if(!$this->tokensUsed){
+            return [];
+        }
+
         $updatedTokens = [];
         for ($i = 0; $i < count($this->tokens); $i++) {
             if (isset($this->results[$i]["registration_id"])) {

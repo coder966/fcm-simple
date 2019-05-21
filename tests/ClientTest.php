@@ -50,6 +50,17 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
     }
 
     /**
+     * Tests sending a message to a topic
+     * @covers Client::sendToTopic
+     */
+    public function testSendToTopic() {
+        $message = new Message();
+        $message->put("key", "val");
+
+        $this->object->sendToTopic($message, "topic1");
+    }
+
+    /**
      * Tests not setting any tokens
      * @covers Client::setTokens
      * @covers Client::send

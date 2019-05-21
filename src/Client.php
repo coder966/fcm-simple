@@ -67,6 +67,27 @@ class Client {
     }
 
     /**
+     * Send a message to a specific topic.
+     * @param \FCMSimple\Message $message Message object
+     * @param string $topic The name of the topic.
+     * @return \FCMSimple\Response A response object regarding the send operation.
+     */
+    public function sendToTopic(Message $message, $topic) {
+        if ($message == null) {
+            throw new \InvalidArgumentException("The message cannot be null.");
+        }
+
+        if ($topic == null) {
+            throw new \InvalidArgumentException("The topic cannot be null.");
+        }else if(strlen($topic) == 0){
+            throw new \InvalidArgumentException("The topic cannot be empty.");
+        }
+
+        $httpResponse = Client::performCall($this->serverKey, $message, $topic);
+        return new Response($httpResponse[0], $httpResponse[1], null);
+    }
+
+    /**
      * Send a message to the specified tokens.
      * @param \FCMSimple\Message $message Message object
      * @param array $tokens [optional] Array of the tokens of the devices to send to.
@@ -109,10 +130,10 @@ class Client {
      *
      * @param string $serverKey FCM server key
      * @param \FCMSimple\Message $message The message
-     * @param array $tokens Array of device tokens
+     * @param mixed $target A topic name or an array of device tokens
      * @return array array[0]: response code, array[1]: response body
      */
-    private static function performCall($serverKey, Message $message, array $tokens) {
+    private static function performCall($serverKey, Message $message, $target) {
         // open connection
         $ch = curl_init();
 
@@ -134,7 +155,11 @@ class Client {
 
         // request body
         $messageBody = $message->fields;
-        $messageBody["registration_ids"] = $tokens;
+        if(is_array($target)){
+            $messageBody["registration_ids"] = $target;
+        }else{
+            $messageBody["to"] = "/topics/$target";
+        }
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messageBody));
 
