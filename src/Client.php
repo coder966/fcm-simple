@@ -77,12 +77,19 @@ class Client {
 		$count = count($recipientTokens);
 		if($count == 0){
 			throw new \InvalidArgumentException("Tokens array cannot be empty.");
-		}else if($count > 1000){
-			throw new \Exception("Too many tokens provided. The total number of tokens used in a single push cannot exceed 1000 tokens. Please chunk your tokens array.");
-		}
+        }
 
-        $httpResponse = Client::performCall($this->serverKey, $message, $recipientTokens);
-        return new Response($httpResponse[0], $httpResponse[1], $recipientTokens);
+        // chunk tokens array to avoid arrays exceeding 1000 which is the limit defined by FCM
+        $isSuccessful = true;
+        $results = [];
+        $chunks = array_chunk($recipientTokens, 1000, false);
+        foreach($chunks as $chunk){
+            $httpResponse = Client::performCall($this->serverKey, $message, $chunk);
+            $isSuccessful = $isSuccessful && ($httpResponse[0] == 200);
+            $results = array_merge($results, json_decode($httpResponse[1], true)["results"]);
+        }
+
+        return new Response($isSuccessful ? 200 : 500, json_encode(["results"=>$results]), $recipientTokens);
 	}
 
 	/**
