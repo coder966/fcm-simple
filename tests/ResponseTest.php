@@ -85,16 +85,16 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
     }
 
     /**
-     * @covers Response::getBadTokens
+     * @covers Response::getInvalidTokens
      */
-    public function testGetBadTokens() {
-        $expectedBadTokens = [
+    public function testGetInvalidTokens() {
+        $expectedInvalidTokens = [
             "token_number_3"
         ];
 
-        $badTokens = $this->object->getBadTokens();
+        $invalidTokens = $this->object->getInvalidTokens();
 
-        $this->assertEquals($expectedBadTokens, $badTokens);
+        $this->assertEquals($expectedInvalidTokens, $invalidTokens);
     }
 
     /**

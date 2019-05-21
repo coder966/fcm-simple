@@ -70,15 +70,6 @@ class Response {
     }
 
     /**
-     * @deprecated use {@link Client#getInvalidTokens()}
-     * Returns an array of invalid / no longer valid tokens. You should delete these from your server database.
-     * @return array Invalid tokens to be removed
-     */
-    public function getBadTokens() {
-        return $this->getInvalidTokens();
-    }
-
-    /**
      * Returns an array of invalid / no longer valid tokens. You should delete these from your server database.
      * @return array Invalid tokens to be removed
      */
@@ -93,16 +84,16 @@ class Response {
             "NotRegistered"
         ];
 
-        $badTokens = [];
+        $invalidTokens = [];
         for ($i = 0; $i < count($this->tokens); $i++) {
             if(isset($this->results[$i]["error"])){
                 if (in_array($this->results[$i]["error"], $errorTypes)) {
-                    array_push($badTokens, $this->tokens[$i]);
+                    array_push($invalidTokens, $this->tokens[$i]);
                 }
             }
         }
 
-        return $badTokens;
+        return $invalidTokens;
     }
 
     /**
