@@ -3,12 +3,15 @@
 [![Latest Stable Version](https://poser.pugx.org/coder966/fcm-simple/v/stable)](https://packagist.org/packages/coder966/fcm-simple)
 [![License](https://poser.pugx.org/coder966/fcm-simple/license)](https://packagist.org/packages/coder966/fcm-simple)
 
-A simple PHP library to send messages to devices registered through Firebase Cloud Messaging (FCM).
+A PHP library to send messages to devices registered through Firebase Cloud Messaging (FCM).
+
 Features:
 - Lightweight & simple
 - Zero dependencies
-- Provides you with the tokens you should (remove/update) from your database.
 - Implemented using cURL
+- Support sending to topics and tokens
+- Support various message options like `CollapseKey`, `Priority`, `TimeToLive` and more
+- Provides you with the tokens you should update/remove from your database
 
 
 ## Usage
@@ -29,20 +32,23 @@ use FCMSimple\Message;
 // create the client
 $client = new Client("YOUR_SERVER_KEY");
 
-// prepare your array of tokens
-$tokens = [
-    "token_1",
-    "token_2",
-    "token_3"
-];
-
 // create the message
 $msg = new Message();
 $msg->put("key1", "value1");
 $msg->put("key2", "value2");
 
-// send the message
-$client->send($msg, $tokens);
+// send the message to a specific topic
+$client->sendToTopic($msg, "my_topic");
+
+// or you can send to specific devices using their registration tokens
+// so first prepare your array of tokens, typically retrieve from DB
+$tokens = [
+    "token_1",
+    "token_2",
+    "token_3"
+];
+// and send
+$client->sendToTokens($msg, $tokens);
 ```
 
 ### Android Client
