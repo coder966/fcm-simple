@@ -70,10 +70,10 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 		$message = new Message();
 		$message->put("type", "NEW_POSTS");
 
-		$tokens = array(
+		$tokens = [
 			"token1",
 			"token2"
-		);
+        ];
 
 		$this->object->send($message, $tokens);
 	}

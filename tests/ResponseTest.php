@@ -41,25 +41,25 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
-		$this->fixtureTokens = array(
+		$this->fixtureTokens = [
 			"token_number_1",
 			"token_number_2",
 			"token_number_3"
-		);
+        ];
 
 		$this->fixtureResponseCode = 200;
 
-		$this->fixtureResponseBody = array(
+		$this->fixtureResponseBody = [
 			"multicast_id" => 123456789,
 			"success" => 1,
 			"failure" => 2,
 			"canonical_ids" => 1,
-			"results" => array(
-				array("message_id" => "0:123456789abcdef"),
-				array("message_id" => "0:123456789abcdef", "registration_id" => "updated_token"),
-				array("error" => "InvalidRegistration")
-			)
-		);
+			"results" => [
+				["message_id" => "0:123456789abcdef"],
+				["message_id" => "0:123456789abcdef", "registration_id" => "updated_token"],
+				["error" => "InvalidRegistration"]
+            ]
+        ];
 		$this->fixtureResponseBody = json_encode($this->fixtureResponseBody);
 
 		$this->object = new Response($this->fixtureResponseCode, $this->fixtureResponseBody, $this->fixtureTokens);
@@ -88,9 +88,9 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	 * @covers Response::getBadTokens
 	 */
 	public function testGetBadTokens() {
-		$expectedBadTokens = array(
+		$expectedBadTokens = [
 			"token_number_3"
-		);
+        ];
 
 		$badTokens = $this->object->getBadTokens();
 
@@ -101,9 +101,9 @@ class ResponseTest extends \PHPUnit\Framework\TestCase {
 	 * @covers Response::getUpdatedTokens
 	 */
 	public function testGetUpdatedTokens() {
-		$expectedUpdatedTokens = array(
-			array("old" => "token_number_2", "new" => "updated_token")
-		);
+		$expectedUpdatedTokens = [
+			["old" => "token_number_2", "new" => "updated_token"]
+        ];
 
 		$updatedTokens = $this->object->getUpdatedTokens();
 

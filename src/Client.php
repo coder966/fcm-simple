@@ -36,7 +36,7 @@ class Client {
 	 */
 	public function __construct($serverKey) {
         $this->serverKey = $serverKey;
-        $this->defaultTokens = array();
+        $this->defaultTokens = [];
 
 		// preform a call just to validate server key
 		$httpResponse = Client::performCall($serverKey, new Message(), []);
@@ -114,10 +114,10 @@ class Client {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 		// request header
-		$headers = array(
+		$headers = [
 			"Authorization: key={$serverKey}",
 			"Content-Type: application/json"
-		);
+        ];
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 		// request body

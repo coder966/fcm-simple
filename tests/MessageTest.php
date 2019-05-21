@@ -41,19 +41,19 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 	 * @covers Message
 	 */
 	public function test() {
-		$fixture = array(
-			"data" => array(
+		$fixture = [
+			"data" => [
 				"key1" => "val1",
 				"key2" => "val2",
 				"key3" => "val3",
 				"key4" => "val4"
-			),
+            ],
 			"collapse_key" => "TestCollapseKey",
 			"priority" => "high",
 			"time_to_live" => 30,
 			"restricted_package_name" => "net.coder966.fcm",
 			"dry_run" => true,
-		);
+		];
 
 		$this->object->add("key1", "val1");
 		$this->object->add("key2", "val2");

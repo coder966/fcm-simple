@@ -31,11 +31,11 @@ use FCMSimple\Message;
 $client = new Client("YOUR_SERVER_KEY");
 
 // prepare your array of tokens
-$tokens = array(
+$tokens = [
     "token_1",
     "token_2",
     "token_3"
-);
+];
 
 // create the message
 $msg = new Message();

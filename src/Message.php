@@ -25,9 +25,9 @@ class Message {
 	 * Create new message
 	 */
 	public function __construct() {
-		$this->fields = array(
-			"data" => array(),
-		);
+		$this->fields = [
+			"data" => [],
+        ];
 	}
 
 	/**

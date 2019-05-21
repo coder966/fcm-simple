@@ -65,13 +65,13 @@ class Response {
 	 */
 	public function getBadTokens() {
 		// error types
-		$errorTypes = array(
+		$errorTypes = [
 			"MissingRegistration",
 			"InvalidRegistration",
 			"NotRegistered"
-		);
+        ];
 
-		$badTokens = array();
+		$badTokens = [];
 		for ($i = 0; $i < count($this->tokens); $i++) {
 			if(isset($this->results[$i]["error"])){
 				if (in_array($this->results[$i]["error"], $errorTypes)) {
@@ -89,10 +89,10 @@ class Response {
 	 * @return array An array where each element is also an array of the format <code>{'old'=>oldToken, 'new'=>newToken}</code>
 	 */
 	public function getUpdatedTokens() {
-		$updatedTokens = array();
+		$updatedTokens = [];
 		for ($i = 0; $i < count($this->tokens); $i++) {
 			if (isset($this->results[$i]["registration_id"])) {
-				array_push($updatedTokens, array("old" => $this->tokens[$i], "new" => $this->results[$i]["registration_id"]));
+				array_push($updatedTokens, ["old" => $this->tokens[$i], "new" => $this->results[$i]["registration_id"]]);
 			}
 		}
 
