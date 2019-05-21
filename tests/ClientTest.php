@@ -63,7 +63,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
     /**
      * Tests not setting any tokens
      * @covers Client::setTokens
-     * @covers Client::send
+     * @covers Client::sendToTokens
      */
     public function testEmptyTokensArray() {
         $this->expectException(\InvalidArgumentException::class);
@@ -71,13 +71,13 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
         $message = new Message();
         $message->put("key", "val");
 
-        $this->object->send($message);
+        $this->object->sendToTokens($message, []);
     }
 
     /**
-     * @covers Client::send
+     * @covers Client::sendToTokens
      */
-    public function testSend() {
+    public function testSendToTokens() {
         $message = new Message();
         $message->put("type", "NEW_POSTS");
 
@@ -86,7 +86,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
             "token2"
         ];
 
-        $this->object->send($message, $tokens);
+        $this->object->sendToTokens($message, $tokens);
     }
 
 }
