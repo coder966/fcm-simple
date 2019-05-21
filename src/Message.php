@@ -31,16 +31,6 @@ class Message {
     }
 
     /**
-     * @deprecated This method is deprecated. Use {@link Message#put} instead.
-     * Put a pair of data (key->value)
-     * @param string $key
-     * @param string $value
-     */
-    public function add($key, $value) {
-        $this->put($key, $value);
-    }
-
-    /**
      * Put a pair of data (key->value)
      * @param string $key
      * @param string $value

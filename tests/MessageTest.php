@@ -55,8 +55,8 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
             "dry_run" => true,
         ];
 
-        $this->object->add("key1", "val1");
-        $this->object->add("key2", "val2");
+        $this->object->put("key1", "val1");
+        $this->object->put("key2", "val2");
         $this->object->put("key3", "val3");
         $this->object->put("key4", "val4");
         $this->object->setCollapseKey("TestCollapseKey");
