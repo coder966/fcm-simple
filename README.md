@@ -6,12 +6,12 @@
 A PHP library to send messages to devices registered through Firebase Cloud Messaging (FCM).
 
 Features:
-- Lightweight & simple
-- Zero dependencies
-- Implemented using cURL
-- Support sending to topics and tokens
-- Support various message options like `CollapseKey`, `Priority`, `TimeToLive` and more
-- Provides you with the tokens you should update/remove from your database
+- Intuitive API
+- Lightweight (zero dependencies)
+- Implemented using `cURL`
+- Supports sending to `topics` and `tokens`
+- Supports various message options like `CollapseKey`, `Priority`, `TimeToLive` and more
+- Informs you about the tokens you should update/remove from your database
 
 
 ## Usage
@@ -52,7 +52,7 @@ $client->sendToTokens($msg, $tokens);
 ```
 
 ### Android Client
-In the service that extends `FirebaseMessagingService`, in method `onMessageReceived`, use:
+In your `FirebaseMessagingService.onMessageReceived`, retrieve incoming messages:
 ```java
 Map<String, String> msg = remoteMessage.getData();
 String value1 = msg.get("key1");
