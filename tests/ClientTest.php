@@ -1,14 +1,7 @@
 <?php
 
-namespace FCMSimple\Tests;
-
-use FCMSimple\Message;
-use FCMSimple\Response;
 use FCMSimple\Client;
-
-require_once 'src/Message.php';
-require_once 'src/Response.php';
-require_once 'src/Client.php';
+use FCMSimple\Message;
 
 /**
  * Test case for Client class

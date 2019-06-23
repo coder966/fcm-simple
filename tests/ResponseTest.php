@@ -1,10 +1,6 @@
 <?php
 
-namespace FCMSimple\Tests;
-
 use FCMSimple\Response;
-
-require_once 'src/Response.php';
 
 /**
  * Test case for Response class

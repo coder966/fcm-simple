@@ -1,10 +1,6 @@
 <?php
 
-namespace FCMSimple\Tests;
-
 use FCMSimple\Message;
-
-require_once 'src/Message.php';
 
 /**
  * Test case for Message class
